@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>by.academy.it</groupId>
-    <artifactId>lowcost</artifactId>
+    <artifactId>jd02-mvn</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>by.academy.it</groupId>
@@ -22,5 +22,16 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+    </dependency>
+     <dependency>
+       <groupId>by.academy.it</groupId>
+       <artifactId>dao</artifactId>
+         <version>1.0-SNAPSHOT</version>
+     </dependency>
+
   </dependencies>
 </project>

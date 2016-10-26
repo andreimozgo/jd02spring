@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>by.academy.it</groupId>
-  <artifactId>lowcost</artifactId>
+  <artifactId>jd02-mvn</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>lowcost</name>
+  <name>jd02-mvn</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -22,6 +22,48 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+  	 <plugins>
+      <!-- Tomcat Maven Plugin -->
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <server>tomcat</server>
+          <path>/${project.name}</path>
+        </configuration>           
+      </plugin>
+      </plugins>
+  </build>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.mchange</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>0.9.5.2</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/jstl/jstl -->
+      <dependency>
+        <groupId>jstl</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.39</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
   <modules>
     <module>dao</module>
     <module>services</module>

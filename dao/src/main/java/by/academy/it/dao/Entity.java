@@ -1,8 +1,5 @@
-package by.academy.it.dao.Entity;
+package by.academy.it.dao;
 
-/**
- * Created by Андрей on 19.10.2016.
- */
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable, Cloneable {
@@ -23,3 +20,4 @@ public abstract class Entity implements Serializable, Cloneable {
         this.id = id;
     }
 }
+
