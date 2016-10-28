@@ -1,6 +1,11 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.*;
+import by.academy.it.dao.Flight;
+import by.academy.it.dao.FlightDAO;
+import by.academy.it.dao.Ticket;
+import by.academy.it.dao.TicketDAO;
+import by.academy.it.dao.datasource.DataSource;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,10 +15,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+
 public class BuyTicketCommand implements ActionCommand {
 
 
     public String execute(HttpServletRequest request) {
+		final Logger LOG = Logger.getLogger(BuyTicketCommand.class);
         String page = null;
         HttpSession session = request.getSession(true);
         int flightId = Integer.parseInt(request.getParameter("flight_id"));
@@ -29,7 +36,8 @@ public class BuyTicketCommand implements ActionCommand {
             TicketDAO ticketDao = new TicketDAO(connectionDb);
             if (ticketDao.create(ticket)) {
                 page = ConfigurationManager.getProperty("path.page.user");
-            }
+				LOG.info("User " + userId + " added ticket succesfully");
+             }
 
             List<Ticket> tickets = ticketDao.getAllByUser(userId);
             request.setAttribute("tickets", tickets);
@@ -44,16 +52,12 @@ public class BuyTicketCommand implements ActionCommand {
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (PropertyVetoException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
 
         return page;
     }

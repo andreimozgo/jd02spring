@@ -1,6 +1,6 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.DataSource;
+import by.academy.it.dao.datasource.DataSource;
 import by.academy.it.dao.Flight;
 import by.academy.it.dao.FlightDAO;
 
