@@ -2,12 +2,14 @@ package by.academy.it.dao.impl;
 
 import by.academy.it.dao.FlightDao;
 import by.academy.it.entity.Flight;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FlightDaoImpl implements FlightDao {
+    final Logger LOG = Logger.getLogger(FlightDaoImpl.class);
     public static final String SELECT_ALL_FLIGHT = "SELECT * FROM flight";
     Connection connection;
 
@@ -30,16 +32,14 @@ public class FlightDaoImpl implements FlightDao {
                 }
                 rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOG.error("Exception: ", e);
             } finally {
                 ps.close();
             }
-
-        } catch (SQLException e1) {
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("Exception: ", e);
         }
         return lst;
-
     }
 
     public void create(Flight entity) {
@@ -53,12 +53,10 @@ public class FlightDaoImpl implements FlightDao {
             ps.setInt(3, entity.getSeats());
             ps.setInt(4, entity.getCost());
             ps.setInt(5, entity.getUpCost());
-
             ps.executeUpdate();
             ps.close();
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
     }
 
@@ -74,13 +72,12 @@ public class FlightDaoImpl implements FlightDao {
             result.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
         return flight;
     }
 
     public void update(Flight entity) {
-
     }
 
     public void delete(Integer id) {
@@ -90,8 +87,7 @@ public class FlightDaoImpl implements FlightDao {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
     }
-
 }

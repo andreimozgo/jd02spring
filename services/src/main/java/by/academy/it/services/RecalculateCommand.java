@@ -10,8 +10,6 @@ import by.academy.it.entity.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +33,6 @@ public class RecalculateCommand implements ActionCommand {
 
                 Service service = serviceDaoImpl.findEntityById(1);
                 cost += service.getCost();
-                System.out.println(cost + "кост");
             }
             if (Integer.parseInt(request.getParameter("priorityregistration")) == 1) {
                 Service service = serviceDaoImpl.findEntityById(2);
@@ -65,10 +62,6 @@ public class RecalculateCommand implements ActionCommand {
             }
 
         } catch (SQLException e2) {
-            e2.printStackTrace();
-        } catch (IOException e2) {
-            e2.printStackTrace();
-        } catch (PropertyVetoException e2) {
             e2.printStackTrace();
         }
         return page;

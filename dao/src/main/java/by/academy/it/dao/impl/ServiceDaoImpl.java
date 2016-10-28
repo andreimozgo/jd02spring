@@ -2,6 +2,7 @@ package by.academy.it.dao.impl;
 
 import by.academy.it.dao.ServiceDao;
 import by.academy.it.entity.Service;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ServiceDaoImpl implements ServiceDao {
-
+    final Logger LOG = Logger.getLogger(ServiceDaoImpl.class);
     Connection connection;
 
     public ServiceDaoImpl(Connection connection) {
@@ -18,7 +19,6 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     public void create(Service entity) {
-
     }
 
     public Service findEntityById(Integer id) {
@@ -34,18 +34,14 @@ public class ServiceDaoImpl implements ServiceDao {
             statement.close();
             return service;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
         return service;
     }
 
     public void update(Service entity) {
-
     }
 
     public void delete(Integer id) {
-
     }
-
-
 }

@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -51,10 +49,6 @@ public class BuyTicketCommand implements ActionCommand {
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
 

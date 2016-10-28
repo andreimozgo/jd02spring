@@ -2,13 +2,16 @@ package by.academy.it.dao.impl;
 
 import by.academy.it.dao.UserDao;
 import by.academy.it.entity.User;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 
 public class UserDaoImpl implements UserDao {
+    final Logger LOG = Logger.getLogger(UserDaoImpl.class);
     Connection connection;
 
     public UserDaoImpl(Connection connection) {
+
         this.connection = connection;
     }
 
@@ -25,7 +28,7 @@ public class UserDaoImpl implements UserDao {
             result.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
         return pass;
     }
@@ -45,7 +48,7 @@ public class UserDaoImpl implements UserDao {
             user.setUserRole(role);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
         return user;
     }
@@ -62,7 +65,7 @@ public class UserDaoImpl implements UserDao {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
     }
 
@@ -71,11 +74,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     public void update(User entity) {
-
     }
 
     public void delete(Integer id) {
-
     }
 }
 

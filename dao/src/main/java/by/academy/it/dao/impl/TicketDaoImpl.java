@@ -2,13 +2,14 @@ package by.academy.it.dao.impl;
 
 import by.academy.it.dao.TicketDao;
 import by.academy.it.entity.Ticket;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketDaoImpl implements TicketDao {
-
+    final Logger LOG = Logger.getLogger(TicketDaoImpl.class);
     Connection connection;
 
     public TicketDaoImpl(Connection connection) {
@@ -29,7 +30,7 @@ public class TicketDaoImpl implements TicketDao {
             result.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
         return ticket;
     }
@@ -46,7 +47,7 @@ public class TicketDaoImpl implements TicketDao {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
     }
 
@@ -59,12 +60,11 @@ public class TicketDaoImpl implements TicketDao {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception: ", e);
         }
     }
 
     public void delete(Integer id) {
-
     }
 
     public List<Ticket> getAllByUser(int userId) {
@@ -82,13 +82,12 @@ public class TicketDaoImpl implements TicketDao {
                 }
                 rs.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOG.error("Exception: ", e);
             } finally {
                 ps.close();
             }
-
-        } catch (SQLException e1) {
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("Exception: ", e);
         }
         return lst;
     }
