@@ -1,8 +1,8 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.datasource.DataSource;
-import by.academy.it.dao.Flight;
-import by.academy.it.dao.FlightDAO;
+import by.academy.it.dao.impl.FlightDaoImpl;
+import by.academy.it.datasource.DataSource;
+import by.academy.it.entity.Flight;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyVetoException;
@@ -16,12 +16,12 @@ public class AddFlightCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
 
-        FlightDAO flightDao;
+        FlightDaoImpl flightDao;
         Connection connection;
         String page = null;
         try {
             connection = DataSource.getInstance().getConnection();
-            flightDao = new FlightDAO(connection);
+            flightDao = new FlightDaoImpl(connection);
             String date = request.getParameter("flightDate");
             int seats = Integer.parseInt(request.getParameter("seats"));
             int cost = Integer.parseInt(request.getParameter("cost"));

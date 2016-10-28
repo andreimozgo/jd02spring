@@ -1,7 +1,12 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.*;
-import by.academy.it.dao.datasource.DataSource;
+import by.academy.it.dao.impl.FlightDaoImpl;
+import by.academy.it.dao.impl.ServiceDaoImpl;
+import by.academy.it.dao.impl.TicketDaoImpl;
+import by.academy.it.datasource.DataSource;
+import by.academy.it.entity.Flight;
+import by.academy.it.entity.Service;
+import by.academy.it.entity.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,30 +25,31 @@ public class RecalculateCommand implements ActionCommand {
 
         try {
             Connection connectionDb = DataSource.getInstance().getConnection();
-            TicketDAO ticketDao = new TicketDAO(connectionDb);
+            TicketDaoImpl ticketDao = new TicketDaoImpl(connectionDb);
             Ticket ticket = ticketDao.findEntityById(ticketId);
             int cost = ticket.getCost();
 
-            ServicesDAO servicesDao = new ServicesDAO(connectionDb);
+            ServiceDaoImpl serviceDaoImpl = new ServiceDaoImpl(connectionDb);
 
             if (Integer.parseInt(request.getParameter("baggage")) == 1) {
 
-                Services service = servicesDao.findEntityById(1);
+                Service service = serviceDaoImpl.findEntityById(1);
                 cost += service.getCost();
                 System.out.println(cost + "кост");
             }
             if (Integer.parseInt(request.getParameter("priorityregistration")) == 1) {
-                Services service = servicesDao.findEntityById(2);
+                Service service = serviceDaoImpl.findEntityById(2);
                 cost += service.getCost();
             }
             if (Integer.parseInt(request.getParameter("priorityboarding")) == 1) {
-                Services service = servicesDao.findEntityById(3);
+                Service service = serviceDaoImpl.findEntityById(3);
                 cost += service.getCost();
             }
             ticket.setCost(cost);
             ticketDao.update(ticket);
+            ticketDao.findEntityById(ticketId);
 
-            FlightDAO fd = new FlightDAO(connectionDb);
+            FlightDaoImpl fd = new FlightDaoImpl(connectionDb);
             List<Flight> flights = fd.getAll();
             request.setAttribute("flights", flights);
 

@@ -1,7 +1,12 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.*;
-import by.academy.it.dao.datasource.DataSource;
+import by.academy.it.dao.impl.FlightDaoImpl;
+import by.academy.it.dao.impl.TicketDaoImpl;
+import by.academy.it.dao.impl.UserDaoImpl;
+import by.academy.it.datasource.DataSource;
+import by.academy.it.entity.Flight;
+import by.academy.it.entity.Ticket;
+import by.academy.it.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,7 +33,7 @@ public class LoginCommand implements ActionCommand {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", login);
                 // получение роли пользователя
-                UsersDAO userDao = new UsersDAO(connectionDb);
+                UserDaoImpl userDao = new UserDaoImpl(connectionDb);
                 User user = userDao.getUserByLogin(login);
                 String userRole = user.getUserRole();
                 int id = user.getId();
@@ -37,7 +42,7 @@ public class LoginCommand implements ActionCommand {
                 session.setAttribute("userid", id);
                 session.setAttribute("user", login);
 
-                TicketDAO ticketDao = new TicketDAO(connectionDb);
+                TicketDaoImpl ticketDao = new TicketDaoImpl(connectionDb);
                 List<Ticket> tickets = ticketDao.getAllByUser(id);
                 request.setAttribute("tickets", tickets);
                 // определение пути к main.jsp
@@ -47,7 +52,7 @@ public class LoginCommand implements ActionCommand {
                     page = ConfigurationManager.getProperty("path.page.user");
                 }
 
-                FlightDAO fd = new FlightDAO(connectionDb);
+                FlightDaoImpl fd = new FlightDaoImpl(connectionDb);
                 List<Flight> flights = fd.getAll();
                 request.setAttribute("flights", flights);
                 try {

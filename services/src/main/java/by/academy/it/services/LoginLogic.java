@@ -1,7 +1,7 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.User;
-import by.academy.it.dao.UsersDAO;
+import by.academy.it.dao.impl.UserDaoImpl;
+import by.academy.it.entity.User;
 
 import java.sql.Connection;
 
@@ -15,18 +15,15 @@ public class LoginLogic {
             return passCheckResult;
         }
 
-        UsersDAO userDao = new UsersDAO(connectionDb);
+        UserDaoImpl userDao = new UserDaoImpl(connectionDb);
         passCheckResult = userDao.getPassword(enterLogin).equals(enterPass);
         return passCheckResult;
     }
 
     public static String getUserRole(String enterLogin, Connection connectionDb) {
 
-        String userRole = "user";
-
-        UsersDAO userDao = new UsersDAO(connectionDb);
+        UserDaoImpl userDao = new UserDaoImpl(connectionDb);
         User user = userDao.getUserByLogin(enterLogin);
-        userRole = user.getUserRole();
-        return userRole;
+        return user.getUserRole();
     }
 }

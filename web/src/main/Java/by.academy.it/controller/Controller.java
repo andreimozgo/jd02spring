@@ -1,4 +1,4 @@
-package by.academy.it;
+package by.academy.it.controller;
 
 import by.academy.it.services.ActionCommand;
 import by.academy.it.services.ActionFactory;
@@ -30,8 +30,7 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Зашли в сервлет");
-        String page = null;
+        String page;
         // определение команды, пришедшей из JSP
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);

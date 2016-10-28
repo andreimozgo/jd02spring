@@ -1,4 +1,4 @@
-package by.academy.it.dao.datasource;
+package by.academy.it.datasource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 

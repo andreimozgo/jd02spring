@@ -1,13 +1,13 @@
-package by.academy.it.dao;
+package by.academy.it.entity;
 
-public class Services extends Entity {
+public class Service extends Entity {
     private String name;
     private int cost;
 
-    public Services() {
+    public Service() {
     }
 
-    public Services(String name, int cost) {
+    public Service(String name, int cost) {
 
         this.name = name;
         this.cost = cost;

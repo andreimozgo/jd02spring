@@ -1,12 +1,15 @@
-package by.academy.it.dao;
+package by.academy.it.dao.impl;
+
+import by.academy.it.dao.UserDao;
+import by.academy.it.entity.User;
 
 import java.sql.*;
-import java.util.List;
 
-public class UsersDAO extends AbstractDAO<Integer, User> {
+public class UserDaoImpl implements UserDao {
+    Connection connection;
 
-    public UsersDAO(Connection connection) {
-        super(connection);
+    public UserDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     public String getPassword(String login) {
@@ -47,11 +50,11 @@ public class UsersDAO extends AbstractDAO<Integer, User> {
         return user;
     }
 
-    public boolean create(User entity) {
+    public void create(User entity) {
 
         String query = "INSERT INTO users (user_id, login, pass, role) " + "VALUES (?, ?, ?, ?)";
         try {
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, 0);
             ps.setString(2, entity.getLogin());
             ps.setString(3, entity.getPassword());
@@ -60,37 +63,19 @@ public class UsersDAO extends AbstractDAO<Integer, User> {
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public List getAll() {
-        return null;
-    }
-
-    @Override
     public User findEntityById(Integer id) {
-        // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public boolean delete(Integer id) {
-        // TODO Auto-generated method stub
-        return false;
+    public void update(User entity) {
+
     }
 
-    @Override
-    public boolean delete(User entity) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public void delete(Integer id) {
 
-    @Override
-    public User update(User entity) {
-        // TODO Auto-generated method stub
-        return null;
     }
 }
 

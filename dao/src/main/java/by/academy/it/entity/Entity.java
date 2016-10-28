@@ -1,4 +1,4 @@
-package by.academy.it.dao;
+package by.academy.it.entity;
 
 import java.io.Serializable;
 

@@ -10,7 +10,6 @@ public class ConfigurationManager {
     }
 
     public static String getProperty(String key) {
-        System.out.println("Зашли в ConfigurationManager");
         return resourceBundle.getString(key);
     }
 }

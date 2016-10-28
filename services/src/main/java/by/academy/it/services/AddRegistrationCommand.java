@@ -1,8 +1,8 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.datasource.DataSource;
-import by.academy.it.dao.User;
-import by.academy.it.dao.UsersDAO;
+import by.academy.it.dao.impl.UserDaoImpl;
+import by.academy.it.datasource.DataSource;
+import by.academy.it.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyVetoException;
@@ -21,10 +21,9 @@ public class AddRegistrationCommand implements ActionCommand {
 
         try {
             Connection connectionDb = DataSource.getInstance().getConnection();
-            UsersDAO usersDao = new UsersDAO(connectionDb);
-            if (usersDao.create(user)) {
+            UserDaoImpl userDao = new UserDaoImpl(connectionDb);
+            userDao.create(user);
                 page = ConfigurationManager.getProperty("path.page.login");
-            }
             try {
                 connectionDb.close();
             } catch (SQLException e) {

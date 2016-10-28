@@ -1,20 +1,21 @@
-package by.academy.it.dao;
+package by.academy.it.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import by.academy.it.dao.TicketDao;
+import by.academy.it.entity.Ticket;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketDAO extends AbstractDAO<Integer, Ticket> {
+public class TicketDaoImpl implements TicketDao {
 
-    public TicketDAO(Connection connection) {
-        super(connection);
+    Connection connection;
+
+    public TicketDaoImpl(Connection connection) {
+
+        this.connection = connection;
     }
 
-    @Override
     public Ticket findEntityById(Integer id) {
 
         Statement statement;
@@ -24,7 +25,7 @@ public class TicketDAO extends AbstractDAO<Integer, Ticket> {
             String query = "SELECT * FROM ticket WHERE ticket_id=\"" + id + "\"";
             ResultSet result = statement.executeQuery(query);
             result.next();
-            ticket = new Ticket((int) id, result.getInt(2), result.getInt(3), result.getInt(5), result.getByte(4));
+            ticket = new Ticket(id, result.getInt(2), result.getInt(3), result.getInt(5), result.getByte(4));
             result.close();
             statement.close();
         } catch (SQLException e) {
@@ -33,23 +34,10 @@ public class TicketDAO extends AbstractDAO<Integer, Ticket> {
         return ticket;
     }
 
-    @Override
-    public boolean delete(Integer id) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean delete(Ticket entity) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean create(Ticket entity) {
+    public void create(Ticket entity) {
         String query = "INSERT INTO ticket (ticket_id, flight_id, client_id, has_paid, cost) " + "VALUES (?, ?, ?, ?, ?)";
         try {
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, 0);
             ps.setInt(2, entity.getFligthId());
             ps.setInt(3, entity.getUserId());
@@ -59,32 +47,24 @@ public class TicketDAO extends AbstractDAO<Integer, Ticket> {
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    @Override
-    public Ticket update(Ticket entity) {
+    public void update(Ticket entity) {
 
-        Ticket ticket = null;
         String query = "UPDATE ticket SET cost=" + entity.getCost() + ", has_paid=" + entity.getPaid() + " WHERE ticket_id=" + entity.getId();
 
         try {
-            PreparedStatement ps = (PreparedStatement) connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return ticket;
         }
-        return findEntityById(entity.getId());
     }
 
-    @Override
-    public List<Ticket> getAll() {
-        // TODO Auto-generated method stub
-        return null;
+    public void delete(Integer id) {
+
     }
 
     public List<Ticket> getAllByUser(int userId) {

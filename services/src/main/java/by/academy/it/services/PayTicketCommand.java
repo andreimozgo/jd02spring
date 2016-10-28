@@ -1,7 +1,10 @@
 package by.academy.it.services;
 
-import by.academy.it.dao.*;
-import by.academy.it.dao.datasource.DataSource;
+import by.academy.it.dao.impl.FlightDaoImpl;
+import by.academy.it.dao.impl.TicketDaoImpl;
+import by.academy.it.datasource.DataSource;
+import by.academy.it.entity.Flight;
+import by.academy.it.entity.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,12 +23,13 @@ public class PayTicketCommand implements ActionCommand {
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
         try {
             Connection connectionDb = DataSource.getInstance().getConnection();
-            TicketDAO ticketDao = new TicketDAO(connectionDb);
+            TicketDaoImpl ticketDao = new TicketDaoImpl(connectionDb);
             Ticket ticket = ticketDao.findEntityById(ticketId);
             ticket.setPaid(1);
             ticketDao.update(ticket);
+            ticketDao.findEntityById(ticketId);
 
-            FlightDAO fd = new FlightDAO(connectionDb);
+            FlightDaoImpl fd = new FlightDaoImpl(connectionDb);
             List<Flight> flights = fd.getAll();
             request.setAttribute("flights", flights);
 
