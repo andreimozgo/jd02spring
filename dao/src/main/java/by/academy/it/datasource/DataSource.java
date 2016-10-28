@@ -38,8 +38,14 @@ public class DataSource {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
 
-        return this.cpds.getConnection();
+        Connection connection = null;
+        try {
+            connection = this.cpds.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
     }
 }
