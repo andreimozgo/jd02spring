@@ -1,9 +1,9 @@
 package by.academy.it.controller;
 
-import by.academy.it.services.ActionCommand;
-import by.academy.it.services.ActionFactory;
-import by.academy.it.services.ConfigurationManager;
-import by.academy.it.services.MessageManager;
+import by.academy.it.command.ActionCommand;
+import by.academy.it.command.ActionFactory;
+import by.academy.it.command.ConfigurationManager;
+import by.academy.it.command.MessageManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/jsp/controller"})
+@WebServlet(urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
 
     private static final long serialVersionUID = -6668349208729370249L;
