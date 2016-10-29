@@ -3,15 +3,12 @@ package by.academy.it.command;
 import by.academy.it.dao.impl.FlightDaoImpl;
 import by.academy.it.dao.impl.ServiceDaoImpl;
 import by.academy.it.dao.impl.TicketDaoImpl;
-import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Service;
 import by.academy.it.entity.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class RecalculateCommand implements ActionCommand {
@@ -21,12 +18,11 @@ public class RecalculateCommand implements ActionCommand {
         HttpSession session = request.getSession(true);
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
 
-        Connection connectionDb = DataSource.getInstance().getConnection();
-        TicketDaoImpl ticketDao = new TicketDaoImpl(connectionDb);
+        TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
         Ticket ticket = ticketDao.findEntityById(ticketId);
         int cost = ticket.getCost();
 
-        ServiceDaoImpl serviceDaoImpl = new ServiceDaoImpl(connectionDb);
+        ServiceDaoImpl serviceDaoImpl = ServiceDaoImpl.getInstance();
 
         if (Integer.parseInt(request.getParameter("baggage")) == 1) {
             Service service = serviceDaoImpl.findEntityById(1);
@@ -44,7 +40,7 @@ public class RecalculateCommand implements ActionCommand {
         ticketDao.update(ticket);
         ticketDao.findEntityById(ticketId);
 
-        FlightDaoImpl fd = new FlightDaoImpl(connectionDb);
+        FlightDaoImpl fd = FlightDaoImpl.getInstance();
         List<Flight> flights = fd.getAll();
         request.setAttribute("flights", flights);
 
@@ -53,11 +49,6 @@ public class RecalculateCommand implements ActionCommand {
         request.setAttribute("tickets", tickets);
 
         page = ConfigurationManager.getProperty("path.page.user");
-        try {
-            connectionDb.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return page;
     }
 }

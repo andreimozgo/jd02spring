@@ -3,11 +3,9 @@ package by.academy.it.services;
 import by.academy.it.dao.impl.UserDaoImpl;
 import by.academy.it.entity.User;
 
-import java.sql.Connection;
-
 public class LoginLogic {
 
-    public static boolean checkLogin(String enterLogin, String enterPass, Connection connectionDb) {
+    public static boolean checkLogin(String enterLogin, String enterPass) {
 
         boolean passCheckResult = false;
 
@@ -15,14 +13,14 @@ public class LoginLogic {
             return passCheckResult;
         }
 
-        UserDaoImpl userDao = new UserDaoImpl(connectionDb);
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
         passCheckResult = userDao.getPassword(enterLogin).equals(enterPass);
         return passCheckResult;
     }
 
-    public static String getUserRole(String enterLogin, Connection connectionDb) {
+    public static String getUserRole(String enterLogin) {
 
-        UserDaoImpl userDao = new UserDaoImpl(connectionDb);
+        UserDaoImpl userDao = UserDaoImpl.getInstance();
         User user = userDao.getUserByLogin(enterLogin);
         return user.getUserRole();
     }

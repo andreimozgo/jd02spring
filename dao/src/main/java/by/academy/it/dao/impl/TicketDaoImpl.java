@@ -1,6 +1,7 @@
 package by.academy.it.dao.impl;
 
 import by.academy.it.dao.TicketDao;
+import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Ticket;
 import org.apache.log4j.Logger;
 
@@ -10,15 +11,18 @@ import java.util.List;
 
 public class TicketDaoImpl implements TicketDao {
     final Logger LOG = Logger.getLogger(TicketDaoImpl.class);
-    Connection connection;
+    private static TicketDaoImpl instance = null;
 
-    public TicketDaoImpl(Connection connection) {
+    private TicketDaoImpl() {
+    }
 
-        this.connection = connection;
+    public static synchronized TicketDaoImpl getInstance() {
+        if (instance == null) instance = new TicketDaoImpl();
+        return instance;
     }
 
     public Ticket findEntityById(Integer id) {
-
+        Connection connection = DataSource.getInstance().getConnection();
         Statement statement;
         Ticket ticket = null;
         try {
@@ -29,6 +33,7 @@ public class TicketDaoImpl implements TicketDao {
             ticket = new Ticket(id, result.getInt(2), result.getInt(3), result.getInt(5), result.getByte(4));
             result.close();
             statement.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -37,6 +42,7 @@ public class TicketDaoImpl implements TicketDao {
 
     public void create(Ticket entity) {
         String query = "INSERT INTO ticket (ticket_id, flight_id, client_id, has_paid, cost) " + "VALUES (?, ?, ?, ?, ?)";
+        Connection connection = DataSource.getInstance().getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, 0);
@@ -46,19 +52,20 @@ public class TicketDaoImpl implements TicketDao {
             ps.setInt(5, entity.getCost());
             ps.executeUpdate();
             ps.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
     }
 
     public void update(Ticket entity) {
-
+        Connection connection = DataSource.getInstance().getConnection();
         String query = "UPDATE ticket SET cost=" + entity.getCost() + ", has_paid=" + entity.getPaid() + " WHERE ticket_id=" + entity.getId();
-
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
             ps.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -70,6 +77,7 @@ public class TicketDaoImpl implements TicketDao {
     public List<Ticket> getAllByUser(int userId) {
 
         List<Ticket> lst = new ArrayList<Ticket>();
+        Connection connection = DataSource.getInstance().getConnection();
         PreparedStatement ps;
         try {
             ps = connection.prepareStatement("SELECT * FROM ticket WHERE client_id=\"" + userId + "\"");
@@ -81,6 +89,7 @@ public class TicketDaoImpl implements TicketDao {
                     lst.add(ticket);
                 }
                 rs.close();
+                connection.close();
             } catch (SQLException e) {
                 LOG.error("Exception: ", e);
             } finally {

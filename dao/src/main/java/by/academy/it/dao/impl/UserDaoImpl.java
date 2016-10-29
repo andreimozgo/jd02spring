@@ -1,6 +1,7 @@
 package by.academy.it.dao.impl;
 
 import by.academy.it.dao.UserDao;
+import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.User;
 import org.apache.log4j.Logger;
 
@@ -8,17 +9,22 @@ import java.sql.*;
 
 public class UserDaoImpl implements UserDao {
     final Logger LOG = Logger.getLogger(UserDaoImpl.class);
-    Connection connection;
+    private static UserDaoImpl instance = null;
 
-    public UserDaoImpl(Connection connection) {
+    private UserDaoImpl() {
+    }
 
-        this.connection = connection;
+    public static synchronized UserDaoImpl getInstance() {
+        if (instance == null) instance = new UserDaoImpl();
+        return instance;
     }
 
     public String getPassword(String login) {
 
+        Connection connection = DataSource.getInstance().getConnection();
         Statement statement;
         String pass = null;
+
         try {
             statement = connection.createStatement();
             String query = "SELECT pass FROM users WHERE login=\"" + login + "\"";
@@ -27,6 +33,7 @@ public class UserDaoImpl implements UserDao {
             pass = result.getString(1);
             result.close();
             statement.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -34,8 +41,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUserByLogin(String login) {
+
+        Connection connection = DataSource.getInstance().getConnection();
         Statement statement;
         User user = new User();
+
         try {
             statement = connection.createStatement();
             String query = "SELECT * FROM users WHERE login=\"" + login + "\"";
@@ -47,6 +57,7 @@ public class UserDaoImpl implements UserDao {
             user.setUserId(id);
             user.setUserRole(role);
             statement.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -56,6 +67,7 @@ public class UserDaoImpl implements UserDao {
     public void create(User entity) {
 
         String query = "INSERT INTO users (user_id, login, pass, role) " + "VALUES (?, ?, ?, ?)";
+        Connection connection = DataSource.getInstance().getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, 0);
@@ -64,6 +76,7 @@ public class UserDaoImpl implements UserDao {
             ps.setString(4, "user");
             ps.executeUpdate();
             ps.close();
+            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
