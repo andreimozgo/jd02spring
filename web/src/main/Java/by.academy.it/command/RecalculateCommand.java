@@ -14,7 +14,7 @@ import java.util.List;
 public class RecalculateCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession(true);
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
 
