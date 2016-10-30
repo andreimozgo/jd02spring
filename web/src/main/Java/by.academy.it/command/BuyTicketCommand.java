@@ -1,9 +1,9 @@
 package by.academy.it.command;
 
-import by.academy.it.dao.impl.FlightDaoImpl;
-import by.academy.it.dao.impl.TicketDaoImpl;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
+import by.academy.it.services.FlightServiceImpl;
+import by.academy.it.services.TicketServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,22 +19,17 @@ public class BuyTicketCommand implements ActionCommand {
         int flightId = Integer.parseInt(request.getParameter("flight_id"));
         int userId = (Integer) session.getAttribute("userid");
 
-        FlightDaoImpl flightDao = FlightDaoImpl.getInstance();
-        Flight flight = flightDao.findEntityById(flightId);
+        Flight flight = FlightServiceImpl.getInstance().findEntityById(flightId);
         int cost = flight.getCost();
-
         Ticket ticket = new Ticket(0, flightId, userId, cost, 0);
-        TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
-        ticketDao.create(ticket);
+        TicketServiceImpl.getInstance().create(ticket);
+        List<Ticket> tickets = TicketServiceImpl.getInstance().getAllByUser(userId);
+        request.setAttribute("tickets", tickets);
+        List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+        request.setAttribute("flights", flights);
+
         page = ConfigurationManager.getProperty("path.page.user");
         LOG.info("User " + userId + " added ticket succesfully");
-
-        List<Ticket> tickets = ticketDao.getAllByUser(userId);
-        request.setAttribute("tickets", tickets);
-
-        FlightDaoImpl fd = FlightDaoImpl.getInstance();
-        List<Flight> flights = fd.getAll();
-        request.setAttribute("flights", flights);
         return page;
     }
 }

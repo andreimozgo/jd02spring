@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 public class ActionFactory {
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand current = new EmptyCommand();
-        // извлечение имени команды из запроса
+        // get command from request
         String action = request.getParameter("command");
         if (action == null || action.isEmpty()) {
-            // если команда не задана в текущем запросе
+            // if command empty
             return current;
         }
-        // получение объекта, соответствующего команде
+        // call of the corresponding object
         try {
             CommandEnum currentEnum = CommandEnum.valueOf(action.toUpperCase());
             current = currentEnum.getCurrentCommand();

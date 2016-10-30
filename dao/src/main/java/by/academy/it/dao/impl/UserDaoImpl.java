@@ -20,7 +20,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     public String getPassword(String login) {
-
         Connection connection = DataSource.getInstance().getConnection();
         Statement statement;
         String pass = null;
@@ -41,7 +40,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUserByLogin(String login) {
-
         Connection connection = DataSource.getInstance().getConnection();
         Statement statement;
         User user = new User();
@@ -65,7 +63,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     public void create(User entity) {
-
         String query = "INSERT INTO users (user_id, login, pass, role) " + "VALUES (?, ?, ?, ?)";
         Connection connection = DataSource.getInstance().getConnection();
         try {

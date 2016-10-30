@@ -7,14 +7,11 @@ public class User extends Entity {
     private String userRole;
 
     public User() {
-
     }
 
     public User(String login, String password) {
-
         this.login = login;
         this.password = password;
-
     }
 
     public void setUserId(int id) {
