@@ -33,7 +33,6 @@ public class TicketDaoImpl implements TicketDao {
             ticket = new Ticket(id, result.getInt(2), result.getInt(3), result.getInt(5), result.getByte(4));
             result.close();
             statement.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -52,7 +51,6 @@ public class TicketDaoImpl implements TicketDao {
             ps.setInt(5, entity.getCost());
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -65,7 +63,6 @@ public class TicketDaoImpl implements TicketDao {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -89,7 +86,6 @@ public class TicketDaoImpl implements TicketDao {
                     lst.add(ticket);
                 }
                 rs.close();
-                connection.close();
             } catch (SQLException e) {
                 LOG.error("Exception: ", e);
             } finally {

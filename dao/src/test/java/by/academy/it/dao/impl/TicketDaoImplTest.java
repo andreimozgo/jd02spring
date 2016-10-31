@@ -26,8 +26,6 @@ public class TicketDaoImplTest {
         TicketDaoImpl instance2 = TicketDaoImpl.getInstance();
         assertEquals(instance1.hashCode(), instance2.hashCode());
         expected = TicketDaoImpl.getInstance().findEntityById(1);
-        assertEquals(1, expected.getFligthId());
+        assertEquals("Table Ticket not accessible", 1, expected.getFligthId());
     }
-
-
 }

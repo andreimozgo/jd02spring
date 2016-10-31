@@ -41,7 +41,6 @@ public class FlightDaoImpl implements FlightDao {
                 LOG.error("Exception: ", e);
             } finally {
                 ps.close();
-                connection.close();
             }
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
@@ -62,7 +61,6 @@ public class FlightDaoImpl implements FlightDao {
             ps.setInt(5, entity.getUpCost());
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -80,7 +78,6 @@ public class FlightDaoImpl implements FlightDao {
             flight = new Flight(id, result.getString(2), result.getInt(3), result.getInt(4), result.getByte(5));
             result.close();
             statement.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -97,7 +94,6 @@ public class FlightDaoImpl implements FlightDao {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }

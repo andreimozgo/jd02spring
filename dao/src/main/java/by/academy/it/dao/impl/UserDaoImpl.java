@@ -32,7 +32,6 @@ public class UserDaoImpl implements UserDao {
             pass = result.getString(1);
             result.close();
             statement.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -55,7 +54,6 @@ public class UserDaoImpl implements UserDao {
             user.setUserId(id);
             user.setUserRole(role);
             statement.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
@@ -73,7 +71,6 @@ public class UserDaoImpl implements UserDao {
             ps.setString(4, "user");
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }

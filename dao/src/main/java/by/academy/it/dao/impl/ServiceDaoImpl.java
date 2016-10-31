@@ -37,7 +37,6 @@ public class ServiceDaoImpl implements ServiceDao {
             service = new Service(result.getString(1), result.getInt(2));
             result.close();
             statement.close();
-            connection.close();
             return service;
         } catch (SQLException e) {
             LOG.error("Exception: ", e);

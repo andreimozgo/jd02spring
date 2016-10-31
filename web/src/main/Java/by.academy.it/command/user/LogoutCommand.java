@@ -1,4 +1,7 @@
-package by.academy.it.command;
+package by.academy.it.command.user;
+
+import by.academy.it.command.ActionCommand;
+import by.academy.it.command.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,5 +1,15 @@
 package by.academy.it.command;
 
+import by.academy.it.command.admin.AddFlightCommand;
+import by.academy.it.command.admin.DeleteFlightCommand;
+import by.academy.it.command.client.BuyTicketCommand;
+import by.academy.it.command.client.PayTicketCommand;
+import by.academy.it.command.client.RecalculateCommand;
+import by.academy.it.command.user.AddRegistrationCommand;
+import by.academy.it.command.user.LoginCommand;
+import by.academy.it.command.user.LogoutCommand;
+import by.academy.it.command.user.RegistrationCommand;
+
 public enum CommandEnum {
     LOGIN {
         {

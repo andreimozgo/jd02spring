@@ -13,6 +13,7 @@ public class DataSource {
     final Logger LOG = Logger.getLogger(DataSource.class);
     private static DataSource datasource;
     private ComboPooledDataSource cpds;
+    private ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
 
     private DataSource() {
 
@@ -28,7 +29,7 @@ public class DataSource {
         cpds.setPassword(resource.getString("db.password"));
     }
 
-    public static DataSource getInstance() {
+    public static synchronized DataSource getInstance() {
 
         if (datasource == null) {
             datasource = new DataSource();
@@ -39,13 +40,15 @@ public class DataSource {
     }
 
     public Connection getConnection() {
-
-        Connection connection = null;
-        try {
-            connection = this.cpds.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (threadConnection.get() == null) {
+            try {
+                threadConnection.set(this.cpds.getConnection());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return threadConnection.get();
+        } else {
+            return threadConnection.get();
         }
-        return connection;
     }
 }
