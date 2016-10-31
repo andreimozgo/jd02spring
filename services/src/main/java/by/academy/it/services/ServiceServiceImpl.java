@@ -1,10 +1,16 @@
 package by.academy.it.services;
 
 import by.academy.it.dao.impl.ServiceDaoImpl;
+import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Service;
+import org.apache.log4j.Logger;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class ServiceServiceImpl implements IService<Service> {
     private static ServiceServiceImpl instance = null;
+    final Logger LOG = Logger.getLogger(ServiceServiceImpl.class);
 
     public ServiceServiceImpl() {
     }
@@ -19,7 +25,16 @@ public class ServiceServiceImpl implements IService<Service> {
     }
 
     public Service findEntityById(Integer id) {
-        return ServiceDaoImpl.getInstance().findEntityById(id);
+        Connection connection = DataSource.getInstance().getConnection();
+        Service service = null;
+        try {
+            connection.setAutoCommit(false);
+            service = ServiceDaoImpl.getInstance().findEntityById(id);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
+        return service;
     }
 
     public void update(Service service) {

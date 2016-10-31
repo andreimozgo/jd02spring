@@ -1,10 +1,16 @@
 package by.academy.it.services;
 
 import by.academy.it.dao.impl.UserDaoImpl;
+import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.User;
+import org.apache.log4j.Logger;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class UserServiceImpl implements IService<User> {
     private static UserServiceImpl instance = null;
+    final Logger LOG = Logger.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl() {
     }
@@ -16,15 +22,29 @@ public class UserServiceImpl implements IService<User> {
 
     public boolean checkLogin(String enterLogin, String enterPass) {
         boolean passCheckResult = false;
+        Connection connection = DataSource.getInstance().getConnection();
         if (enterLogin.equals("") || enterPass.equals("")) {
             return passCheckResult;
         }
-        passCheckResult = UserDaoImpl.getInstance().getPassword(enterLogin).equals(enterPass);
+        try {
+            connection.setAutoCommit(false);
+            passCheckResult = UserDaoImpl.getInstance().getPassword(enterLogin).equals(enterPass);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
         return passCheckResult;
     }
 
     public void create(User user) {
-        UserDaoImpl.getInstance().create(user);
+        Connection connection = DataSource.getInstance().getConnection();
+        try {
+            connection.setAutoCommit(false);
+            UserDaoImpl.getInstance().create(user);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
     }
 
     public User findEntityById(Integer id) {
@@ -40,12 +60,15 @@ public class UserServiceImpl implements IService<User> {
     }
 
     public User getUserByLogin(String login) {
-        return UserDaoImpl.getInstance().getUserByLogin(login);
-    }
-
-    public String getUserRole(String enterLogin) {
-        UserDaoImpl userDao = UserDaoImpl.getInstance();
-        User user = userDao.getUserByLogin(enterLogin);
-        return user.getUserRole();
+        Connection connection = DataSource.getInstance().getConnection();
+        User user = null;
+        try {
+            connection.setAutoCommit(false);
+            user = UserDaoImpl.getInstance().getUserByLogin(login);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
+        return user;
     }
 }

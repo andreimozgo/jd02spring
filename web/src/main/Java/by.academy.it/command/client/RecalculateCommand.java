@@ -2,7 +2,6 @@ package by.academy.it.command.client;
 
 import by.academy.it.command.ActionCommand;
 import by.academy.it.command.ConfigurationManager;
-import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Service;
 import by.academy.it.entity.Ticket;
@@ -13,8 +12,6 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class RecalculateCommand implements ActionCommand {
@@ -22,10 +19,8 @@ public class RecalculateCommand implements ActionCommand {
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(RecalculateCommand.class);
         String page;
-        Connection connection = DataSource.getInstance().getConnection();
-        try {
-            connection.setAutoCommit(false);
-            HttpSession session = request.getSession(true);
+
+        HttpSession session = request.getSession(true);
             int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
             TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
             Ticket ticket = ticketService.findEntityById(ticketId);
@@ -51,12 +46,7 @@ public class RecalculateCommand implements ActionCommand {
             int userId = (Integer) session.getAttribute("userid");
             List<Ticket> tickets = ticketService.getAllByUser(userId);
             request.setAttribute("tickets", tickets);
-            connection.commit();
             LOG.info("Ticket recalculated successfully");
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
-        }
 
         page = ConfigurationManager.getProperty("path.page.user");
         return page;

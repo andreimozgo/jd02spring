@@ -1,12 +1,17 @@
 package by.academy.it.services;
 
 import by.academy.it.dao.impl.FlightDaoImpl;
+import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Flight;
+import org.apache.log4j.Logger;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class FlightServiceImpl implements IService<Flight> {
     private static FlightServiceImpl instance = null;
+    final Logger LOG = Logger.getLogger(FlightServiceImpl.class);
 
     public FlightServiceImpl() {
     }
@@ -17,19 +22,51 @@ public class FlightServiceImpl implements IService<Flight> {
     }
 
     public List<Flight> getAll() {
-        return FlightDaoImpl.getInstance().getAll();
+        Connection connection = DataSource.getInstance().getConnection();
+        List<Flight> flights = null;
+        try {
+            connection.setAutoCommit(false);
+            flights = FlightDaoImpl.getInstance().getAll();
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
+        return flights;
     }
 
     public void create(Flight flight) {
-        FlightDaoImpl.getInstance().create(flight);
+        Connection connection = DataSource.getInstance().getConnection();
+        try {
+            connection.setAutoCommit(false);
+            FlightDaoImpl.getInstance().create(flight);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
     }
 
     public void delete(Integer id) {
-        FlightDaoImpl.getInstance().delete(id);
+        Connection connection = DataSource.getInstance().getConnection();
+        try {
+            connection.setAutoCommit(false);
+            FlightDaoImpl.getInstance().delete(id);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
     }
 
     public Flight findEntityById(Integer id) {
-        return FlightDaoImpl.getInstance().findEntityById(id);
+        Connection connection = DataSource.getInstance().getConnection();
+        Flight flight = null;
+        try {
+            connection.setAutoCommit(false);
+            flight = FlightDaoImpl.getInstance().findEntityById(id);
+            connection.close();
+        } catch (SQLException e) {
+            LOG.error("Exception", e);
+        }
+        return flight;
     }
 
     public void update(Flight flight) {

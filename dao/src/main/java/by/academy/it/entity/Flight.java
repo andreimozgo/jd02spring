@@ -8,7 +8,6 @@ public class Flight extends Entity {
     private byte upCost;
 
     public Flight() {
-
     }
 
     public Flight(int id, String date, int seats, int cost, byte upCost) {
@@ -19,7 +18,6 @@ public class Flight extends Entity {
         this.cost = cost;
         this.upCost = upCost;
     }
-
 
     public String getDate() {
         return date;

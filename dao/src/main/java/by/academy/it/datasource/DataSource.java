@@ -40,15 +40,13 @@ public class DataSource {
     }
 
     public Connection getConnection() {
-        if (threadConnection.get() == null) {
-            try {
+        try {
+            if ((threadConnection.get() == null) || threadConnection.get().isClosed()) {
                 threadConnection.set(this.cpds.getConnection());
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-            return threadConnection.get();
-        } else {
-            return threadConnection.get();
+        } catch (SQLException e) {
+            LOG.error("Exception: ", e);
         }
+        return threadConnection.get();
     }
 }
