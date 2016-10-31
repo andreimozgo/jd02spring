@@ -10,6 +10,7 @@ import by.academy.it.entity.User;
 import by.academy.it.services.FlightServiceImpl;
 import by.academy.it.services.TicketServiceImpl;
 import by.academy.it.services.UserServiceImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,23 +23,24 @@ public class LoginCommand implements ActionCommand {
     private static final String PARAM_NAME_PASSWORD = "password";
 
     public String execute(HttpServletRequest request) {
+        final Logger LOG = Logger.getLogger(LoginCommand.class);
         String page;
         String userRole = "user";
-        // извлечение из запроса логина и пароля
+        // getting login and password from request
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String pass = request.getParameter(PARAM_NAME_PASSWORD);
-        // проверка логина и пароля
+        // login and password check
         if (UserServiceImpl.getInstance().checkLogin(login, pass)) {
             Connection connection = DataSource.getInstance().getConnection();
             try {
                 connection.setAutoCommit(false);
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", login);
-                // получение роли пользователя
+                // getting user role
                 User user = UserServiceImpl.getInstance().getUserByLogin(login);
                 userRole = user.getUserRole();
                 int id = user.getId();
-                // помещение роли в сессию
+                // setting user role to session
                 session.setAttribute("role", userRole);
                 session.setAttribute("userid", id);
                 session.setAttribute("user", login);
@@ -47,12 +49,13 @@ public class LoginCommand implements ActionCommand {
                 List<Flight> flights = FlightServiceImpl.getInstance().getAll();
                 request.setAttribute("flights", flights);
                 connection.commit();
+                LOG.info("User " + login + " logged in successfully");
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOG.error("Exception", e);
             }
 
-            // определение пути к main.jsp
+            // getting main.jsp page depending on user role
             if (userRole.equals("admin")) {
                 page = ConfigurationManager.getProperty("path.page.main");
             } else {

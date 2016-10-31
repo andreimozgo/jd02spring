@@ -26,7 +26,6 @@ public class BuyTicketCommand implements ActionCommand {
             HttpSession session = request.getSession(true);
             int flightId = Integer.parseInt(request.getParameter("flight_id"));
             int userId = (Integer) session.getAttribute("userid");
-
             Flight flight = FlightServiceImpl.getInstance().findEntityById(flightId);
             int cost = flight.getCost();
             Ticket ticket = new Ticket(0, flightId, userId, cost, 0);
@@ -36,13 +35,13 @@ public class BuyTicketCommand implements ActionCommand {
             List<Flight> flights = FlightServiceImpl.getInstance().getAll();
             request.setAttribute("flights", flights);
             connection.commit();
+            LOG.info("User bought ticket successfully");
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception", e);
         }
 
         page = ConfigurationManager.getProperty("path.page.user");
-        LOG.info("User bought ticket successfully");
         return page;
     }
 }

@@ -9,6 +9,7 @@ import by.academy.it.entity.Ticket;
 import by.academy.it.services.FlightServiceImpl;
 import by.academy.it.services.ServiceServiceImpl;
 import by.academy.it.services.TicketServiceImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import java.util.List;
 public class RecalculateCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
+        final Logger LOG = Logger.getLogger(RecalculateCommand.class);
         String page;
         Connection connection = DataSource.getInstance().getConnection();
         try {
@@ -50,9 +52,10 @@ public class RecalculateCommand implements ActionCommand {
             List<Ticket> tickets = ticketService.getAllByUser(userId);
             request.setAttribute("tickets", tickets);
             connection.commit();
+            LOG.info("Ticket recalculated successfully");
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception", e);
         }
 
         page = ConfigurationManager.getProperty("path.page.user");

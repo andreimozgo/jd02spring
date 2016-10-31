@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 public class MessageManager {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
-    // класс извлекает информацию из файла messages.properties
+    // this class gets information from file messages.properties
     private MessageManager() {
     }
 

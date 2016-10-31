@@ -7,6 +7,7 @@ import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
 import by.academy.it.services.FlightServiceImpl;
 import by.academy.it.services.TicketServiceImpl;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,7 @@ import java.util.List;
 public class PayTicketCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
+        final Logger LOG = Logger.getLogger(PayTicketCommand.class);
         String page;
         Connection connection = DataSource.getInstance().getConnection();
         try {
@@ -33,9 +35,10 @@ public class PayTicketCommand implements ActionCommand {
             List<Ticket> tickets = TicketServiceImpl.getInstance().getAllByUser(userId);
             request.setAttribute("tickets", tickets);
             connection.commit();
+            LOG.info("Ticket payed successfully");
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception", e);
         }
 
         page = ConfigurationManager.getProperty("path.page.user");
