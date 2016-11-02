@@ -9,14 +9,12 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DataSource {
-
     final Logger LOG = Logger.getLogger(DataSource.class);
     private static DataSource datasource;
     private ComboPooledDataSource cpds;
     private ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
 
     private DataSource() {
-
         ResourceBundle resource = ResourceBundle.getBundle("database");
         cpds = new ComboPooledDataSource();
         try {
@@ -30,7 +28,6 @@ public class DataSource {
     }
 
     public static synchronized DataSource getInstance() {
-
         if (datasource == null) {
             datasource = new DataSource();
             return datasource;

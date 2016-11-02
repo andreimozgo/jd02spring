@@ -65,8 +65,14 @@ public class UserServiceImpl implements IService<User> {
         try {
             connection.setAutoCommit(false);
             user = UserDaoImpl.getInstance().getUserByLogin(login);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
         return user;

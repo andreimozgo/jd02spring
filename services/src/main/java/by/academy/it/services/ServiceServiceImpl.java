@@ -30,8 +30,14 @@ public class ServiceServiceImpl implements IService<Service> {
         try {
             connection.setAutoCommit(false);
             service = ServiceDaoImpl.getInstance().findEntityById(id);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
         return service;

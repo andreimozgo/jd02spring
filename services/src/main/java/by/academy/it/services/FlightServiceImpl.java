@@ -27,8 +27,14 @@ public class FlightServiceImpl implements IService<Flight> {
         try {
             connection.setAutoCommit(false);
             flights = FlightDaoImpl.getInstance().getAll();
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
         return flights;
@@ -39,8 +45,14 @@ public class FlightServiceImpl implements IService<Flight> {
         try {
             connection.setAutoCommit(false);
             FlightDaoImpl.getInstance().create(flight);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
     }
@@ -50,8 +62,14 @@ public class FlightServiceImpl implements IService<Flight> {
         try {
             connection.setAutoCommit(false);
             FlightDaoImpl.getInstance().delete(id);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
     }
@@ -62,8 +80,14 @@ public class FlightServiceImpl implements IService<Flight> {
         try {
             connection.setAutoCommit(false);
             flight = FlightDaoImpl.getInstance().findEntityById(id);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
         return flight;

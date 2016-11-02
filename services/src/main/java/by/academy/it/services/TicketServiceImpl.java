@@ -79,8 +79,14 @@ public class TicketServiceImpl implements IService<Ticket> {
             Ticket ticket = TicketDaoImpl.getInstance().findEntityById(ticketId);
             ticket.setPaid(1);
             TicketServiceImpl.getInstance().update(ticket);
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             LOG.error("Exception", e);
         }
     }
