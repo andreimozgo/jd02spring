@@ -1,6 +1,7 @@
 package by.academy.it.entity;
 
-public class Ticket extends Entity {
+public class Ticket extends AbstractEntity {
+    private int id;
     private int fligthId;
     private int userId;
     private int cost;
@@ -11,7 +12,7 @@ public class Ticket extends Entity {
     }
 
     public Ticket(int id, int flightId, int userId, int cost, int paid) {
-        super(id);
+        this.id = id;
         this.fligthId = flightId;
         this.userId = userId;
         this.cost = cost;
@@ -40,6 +41,22 @@ public class Ticket extends Entity {
 
     public void setPaid(int paid) {
         this.paid = paid;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFligthId(int fligthId) {
+        this.fligthId = fligthId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
 

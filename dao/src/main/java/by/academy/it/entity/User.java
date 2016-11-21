@@ -1,7 +1,8 @@
 package by.academy.it.entity;
 
-public class User extends Entity {
+public class User extends AbstractEntity {
 
+    private int id;
     private String login;
     private String password;
     private String userRole;
@@ -15,7 +16,7 @@ public class User extends Entity {
     }
 
     public void setUserId(int id) {
-        super.setId(id);
+        this.id = id;
     }
 
     public String getLogin() {
@@ -32,6 +33,10 @@ public class User extends Entity {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public int getId() {
+        return id;
     }
 }
 

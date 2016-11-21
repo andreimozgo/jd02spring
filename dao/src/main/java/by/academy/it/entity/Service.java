@@ -1,6 +1,6 @@
 package by.academy.it.entity;
 
-public class Service extends Entity {
+public class Service extends AbstractEntity {
     private String name;
     private int cost;
 

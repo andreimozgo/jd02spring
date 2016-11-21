@@ -1,15 +1,15 @@
 package by.academy.it.dao.impl;
 
 import by.academy.it.dao.FlightDao;
-import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Flight;
+import by.academy.it.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class FlightDaoImpl implements FlightDao {
+public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     final Logger LOG = Logger.getLogger(FlightDaoImpl.class);
     private static FlightDaoImpl instance = null;
     public static final String SELECT_ALL_FLIGHT = "SELECT * FROM flight";
@@ -23,8 +23,13 @@ public class FlightDaoImpl implements FlightDao {
         return instance;
     }
 
-    public List<Flight> getAll() {
-        List<Flight> lst = new ArrayList<Flight>();
+    public List getAll() {
+        Session session = HibernateUtil.getInstance().getSession();
+        String hql = "FROM Flight";
+        Query query = session.createQuery(hql);
+        List<Flight> flights = query.list();
+        return flights;
+/*        List<Flight> lst = new ArrayList<Flight>();
         Connection connection = DataSource.getInstance().getConnection();
         PreparedStatement ps;
         try {
@@ -45,57 +50,6 @@ public class FlightDaoImpl implements FlightDao {
         } catch (SQLException e) {
             LOG.error("Exception: ", e);
         }
-        return lst;
-    }
-
-    public void create(Flight entity) {
-        Connection connection = DataSource.getInstance().getConnection();
-        Date sqlDate = Date.valueOf(entity.getDate());
-        try {
-            String query = "INSERT INTO flight (flight_id, date, seats, cost, up_cost) " + "VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, 0);
-            ps.setDate(2, sqlDate);
-            ps.setInt(3, entity.getSeats());
-            ps.setInt(4, entity.getCost());
-            ps.setInt(5, entity.getUpCost());
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
-    }
-
-    public Flight findEntityById(Integer id) {
-        Connection connection = DataSource.getInstance().getConnection();
-        Statement statement;
-        Flight flight = null;
-        try {
-            statement = connection.createStatement();
-            String query = "SELECT * FROM flight WHERE flight_id=\"" + id + "\"";
-            ResultSet result = statement.executeQuery(query);
-            result.next();
-            flight = new Flight(id, result.getString(2), result.getInt(3), result.getInt(4), result.getByte(5));
-            result.close();
-            statement.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
-        return flight;
-    }
-
-    public void update(Flight entity) {
-    }
-
-    public void delete(Integer id) {
-        Connection connection = DataSource.getInstance().getConnection();
-        String query = "DELETE FROM flight WHERE flight_id =" + id;
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
+        return lst;*/
     }
 }

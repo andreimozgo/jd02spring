@@ -1,9 +1,13 @@
 package by.academy.it.services;
 
+import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.FlightDaoImpl;
 import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Flight;
+import by.academy.it.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,6 +16,7 @@ import java.util.List;
 public class FlightServiceImpl implements IService<Flight> {
     private static FlightServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(FlightServiceImpl.class);
+    protected static HibernateUtil util = HibernateUtil.getInstance();
 
     public FlightServiceImpl() {
     }
@@ -22,39 +27,26 @@ public class FlightServiceImpl implements IService<Flight> {
     }
 
     public List<Flight> getAll() {
-        Connection connection = DataSource.getInstance().getConnection();
         List<Flight> flights = null;
-        try {
-            connection.setAutoCommit(false);
-            flights = FlightDaoImpl.getInstance().getAll();
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            LOG.error("Exception", e);
-        }
+        Session session = util.getSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
+        flights = FlightDaoImpl.getInstance().getAll();
+        transaction.commit();
         return flights;
     }
 
     public void create(Flight flight) {
-        Connection connection = DataSource.getInstance().getConnection();
+        Session session = util.getSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
         try {
-            connection.setAutoCommit(false);
             FlightDaoImpl.getInstance().create(flight);
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+        } catch (DaoException e) {
+            transaction.rollback();
             LOG.error("Exception", e);
         }
+        transaction.commit();
     }
 
     public void delete(Integer id) {
@@ -71,6 +63,8 @@ public class FlightServiceImpl implements IService<Flight> {
                 e1.printStackTrace();
             }
             LOG.error("Exception", e);
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
     }
 
@@ -89,6 +83,8 @@ public class FlightServiceImpl implements IService<Flight> {
                 e1.printStackTrace();
             }
             LOG.error("Exception", e);
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
         return flight;
     }

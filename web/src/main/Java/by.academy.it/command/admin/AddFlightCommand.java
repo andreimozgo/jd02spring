@@ -19,7 +19,7 @@ public class AddFlightCommand implements ActionCommand {
         int seats = Integer.parseInt(request.getParameter("seats"));
         int cost = Integer.parseInt(request.getParameter("cost"));
         byte upCost = Byte.parseByte(request.getParameter("upCost"));
-        Flight flight = new Flight(0, date, seats, cost, upCost);
+        Flight flight = new Flight(null, date, seats, cost, upCost);
         FlightServiceImpl.getInstance().create(flight);
         List<Flight> flights = FlightServiceImpl.getInstance().getAll();
         request.setAttribute("flights", flights);
