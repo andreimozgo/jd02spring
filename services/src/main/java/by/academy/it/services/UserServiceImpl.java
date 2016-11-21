@@ -1,16 +1,17 @@
 package by.academy.it.services;
 
+import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.UserDaoImpl;
-import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.User;
+import by.academy.it.util.HibernateUtil;
 import org.apache.log4j.Logger;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class UserServiceImpl implements IService<User> {
     private static UserServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(UserServiceImpl.class);
+    protected static HibernateUtil util = HibernateUtil.getInstance();
 
     public UserServiceImpl() {
     }
@@ -22,29 +23,28 @@ public class UserServiceImpl implements IService<User> {
 
     public boolean checkLogin(String enterLogin, String enterPass) {
         boolean passCheckResult = false;
-        Connection connection = DataSource.getInstance().getConnection();
         if (enterLogin.equals("") || enterPass.equals("")) {
             return passCheckResult;
         }
-        try {
-            connection.setAutoCommit(false);
-            passCheckResult = UserDaoImpl.getInstance().getPassword(enterLogin).equals(enterPass);
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
-        }
+        Session session = util.getSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
+        passCheckResult = UserDaoImpl.getInstance().getPassword(enterLogin).equals(enterPass);
+        transaction.commit();
         return passCheckResult;
     }
 
     public void create(User user) {
-        Connection connection = DataSource.getInstance().getConnection();
+        Session session = util.getSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
         try {
-            connection.setAutoCommit(false);
             UserDaoImpl.getInstance().create(user);
-            connection.close();
-        } catch (SQLException e) {
+        } catch (DaoException e) {
+            transaction.rollback();
             LOG.error("Exception", e);
         }
+        transaction.commit();
     }
 
     public User findEntityById(Integer id) {
@@ -60,21 +60,13 @@ public class UserServiceImpl implements IService<User> {
     }
 
     public User getUserByLogin(String login) {
-        Connection connection = DataSource.getInstance().getConnection();
         User user = null;
-        try {
-            connection.setAutoCommit(false);
-            user = UserDaoImpl.getInstance().getUserByLogin(login);
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            LOG.error("Exception", e);
-        }
+        Session session = util.getSession();
+        Transaction transaction = null;
+        transaction = session.beginTransaction();
+        user = UserDaoImpl.getInstance().getUserByLogin(login);
+        transaction.commit();
+        LOG.error("User got by login");
         return user;
     }
 }
