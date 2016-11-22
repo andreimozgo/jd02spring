@@ -1,15 +1,15 @@
 package by.academy.it.dao.impl;
 
 import by.academy.it.dao.TicketDao;
-import by.academy.it.datasource.DataSource;
+import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Ticket;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TicketDaoImpl implements TicketDao {
+public class TicketDaoImpl extends BaseDao<Ticket> implements TicketDao {
     final Logger LOG = Logger.getLogger(TicketDaoImpl.class);
     private static TicketDaoImpl instance = null;
 
@@ -21,79 +21,17 @@ public class TicketDaoImpl implements TicketDao {
         return instance;
     }
 
-    public Ticket findEntityById(Integer id) {
-        Connection connection = DataSource.getInstance().getConnection();
-        Statement statement;
-        Ticket ticket = null;
+    public List getAllByUser(int userId) throws DaoException {
+        String hql = "FROM Ticket T WHERE T.userId=:userId";
+        List<Ticket> tickets;
         try {
-            statement = connection.createStatement();
-            String query = "SELECT * FROM ticket WHERE ticket_id=\"" + id + "\"";
-            ResultSet result = statement.executeQuery(query);
-            result.next();
-            ticket = new Ticket(id, result.getInt(2), result.getInt(3), result.getInt(5), result.getByte(4));
-            result.close();
-            statement.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
+            session = util.getSession();
+            Query query = session.createQuery(hql);
+            query.setParameter("userId", userId);
+            tickets = query.list();
+        } catch (HibernateException e) {
+            throw new DaoException(e);
         }
-        return ticket;
-    }
-
-    public void create(Ticket entity) {
-        String query = "INSERT INTO ticket (ticket_id, flight_id, client_id, has_paid, cost) " + "VALUES (?, ?, ?, ?, ?)";
-        Connection connection = DataSource.getInstance().getConnection();
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, 0);
-            ps.setInt(2, entity.getFligthId());
-            ps.setInt(3, entity.getUserId());
-            ps.setInt(4, entity.getPaid());
-            ps.setInt(5, entity.getCost());
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
-    }
-
-    public void update(Ticket entity) {
-        Connection connection = DataSource.getInstance().getConnection();
-        String query = "UPDATE ticket SET cost=" + entity.getCost() + ", has_paid=" + entity.getPaid() + " WHERE ticket_id=" + entity.getId();
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
-    }
-
-    public void delete(Integer id) {
-    }
-
-    public List<Ticket> getAllByUser(int userId) {
-
-        List<Ticket> lst = new ArrayList<Ticket>();
-        Connection connection = DataSource.getInstance().getConnection();
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT * FROM ticket WHERE client_id=\"" + userId + "\"");
-            try {
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    Ticket ticket = new Ticket(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(5),
-                            rs.getByte(4));
-                    lst.add(ticket);
-                }
-                rs.close();
-            } catch (SQLException e) {
-                LOG.error("Exception: ", e);
-            } finally {
-                ps.close();
-            }
-        } catch (SQLException e) {
-            LOG.error("Exception: ", e);
-        }
-        return lst;
+        return tickets;
     }
 }

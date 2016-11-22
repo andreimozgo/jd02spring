@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
 public class Flight extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -78,6 +77,16 @@ public class Flight extends AbstractEntity implements Serializable {
 
     public boolean equals(Object obj) {
         return false;
+    }
+
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", seats=" + seats +
+                ", cost=" + cost +
+                ", upCost=" + upCost +
+                '}';
     }
 }
 

@@ -13,6 +13,7 @@ public class AddFlightCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(AddFlightCommand.class);
+        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
 
         String date = request.getParameter("flightDate");
@@ -20,8 +21,8 @@ public class AddFlightCommand implements ActionCommand {
         int cost = Integer.parseInt(request.getParameter("cost"));
         byte upCost = Byte.parseByte(request.getParameter("upCost"));
         Flight flight = new Flight(null, date, seats, cost, upCost);
-        FlightServiceImpl.getInstance().create(flight);
-        List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+        flightService.createOrUpdate(flight);
+        List<Flight> flights = flightService.getAll();
         request.setAttribute("flights", flights);
         LOG.info("Flight added successfully");
 

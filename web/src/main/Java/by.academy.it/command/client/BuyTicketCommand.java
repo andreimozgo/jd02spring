@@ -16,18 +16,20 @@ public class BuyTicketCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(BuyTicketCommand.class);
+        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
+        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
 
         HttpSession session = request.getSession(true);
         int flightId = Integer.parseInt(request.getParameter("flight_id"));
         int userId = (Integer) session.getAttribute("userid");
-        Flight flight = FlightServiceImpl.getInstance().findEntityById(flightId);
+        Flight flight = flightService.findEntityById(flightId);
         int cost = flight.getCost();
         Ticket ticket = new Ticket(0, flightId, userId, cost, 0);
-        TicketServiceImpl.getInstance().create(ticket);
-        List<Ticket> tickets = TicketServiceImpl.getInstance().getAllByUser(userId);
+        ticketService.createOrUpdate(ticket);
+        List<Ticket> tickets = ticketService.getAllByUser(userId);
         request.setAttribute("tickets", tickets);
-        List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+        List<Flight> flights = flightService.getAll();
         request.setAttribute("flights", flights);
         LOG.info("User bought ticket successfully");
 

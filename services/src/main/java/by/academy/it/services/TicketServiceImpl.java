@@ -1,17 +1,22 @@
 package by.academy.it.services;
 
+import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.TicketDaoImpl;
-import by.academy.it.datasource.DataSource;
 import by.academy.it.entity.Ticket;
+import by.academy.it.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-public class TicketServiceImpl implements IService<Ticket> {
+public class TicketServiceImpl implements Service<Ticket> {
     private static TicketServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(TicketServiceImpl.class);
+    private TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
+    private HibernateUtil util = HibernateUtil.getInstance();
+    private Session session = null;
+    private Transaction transaction = null;
 
     public TicketServiceImpl() {
     }
@@ -22,72 +27,59 @@ public class TicketServiceImpl implements IService<Ticket> {
     }
 
     public List<Ticket> getAllByUser(int userId) {
-        Connection connection = DataSource.getInstance().getConnection();
-        List<Ticket> ticket = null;
+        List<Ticket> tickets = null;
+        session = util.getSession();
+        transaction = session.beginTransaction();
         try {
-            connection.setAutoCommit(false);
-            ticket = TicketDaoImpl.getInstance().getAllByUser(userId);
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
+            tickets = ticketDao.getAllByUser(userId);
+            transaction.commit();
+        } catch (DaoException e) {
+            LOG.error("Error get all tickets: ", e);
+            transaction.rollback();
         }
-        return ticket;
+        return tickets;
     }
 
-    public void create(Ticket ticket) {
-        Connection connection = DataSource.getInstance().getConnection();
+    public void createOrUpdate(Ticket ticket) {
+        session = util.getSession();
+        transaction = session.beginTransaction();
         try {
-            connection.setAutoCommit(false);
-            TicketDaoImpl.getInstance().create(ticket);
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
+            ticketDao.create(ticket);
+            transaction.commit();
+        } catch (DaoException e) {
+            LOG.error("Error create or update ticket: ", e);
+            transaction.rollback();
         }
     }
 
     public Ticket findEntityById(Integer id) {
-        Connection connection = DataSource.getInstance().getConnection();
         Ticket ticket = null;
+        session = util.getSession();
         try {
-            connection.setAutoCommit(false);
-            ticket = TicketDaoImpl.getInstance().findEntityById(id);
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
+            transaction = session.beginTransaction();
+            ticket = ticketDao.findEntityById(id);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error find ticket: ", e);
         }
         return ticket;
-    }
-
-    public void update(Ticket ticket) {
-        Connection connection = DataSource.getInstance().getConnection();
-        try {
-            connection.setAutoCommit(false);
-            TicketDaoImpl.getInstance().update(ticket);
-            connection.close();
-        } catch (SQLException e) {
-            LOG.error("Exception", e);
-        }
     }
 
     public void delete(Integer id) {
     }
 
     public void payTicket(Integer ticketId) {
-        Connection connection = DataSource.getInstance().getConnection();
+        session = util.getSession();
         try {
-            connection.setAutoCommit(false);
-            Ticket ticket = TicketDaoImpl.getInstance().findEntityById(ticketId);
+            transaction = session.beginTransaction();
+            Ticket ticket = ticketDao.findEntityById(ticketId);
             ticket.setPaid(1);
-            TicketServiceImpl.getInstance().update(ticket);
-            connection.commit();
-            connection.close();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            LOG.error("Exception", e);
+            ticketDao.create(ticket);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error pay ticket: ", e);
         }
     }
 }

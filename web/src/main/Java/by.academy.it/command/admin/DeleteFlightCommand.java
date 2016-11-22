@@ -13,11 +13,12 @@ public class DeleteFlightCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(DeleteFlightCommand.class);
+        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
 
         int id = Integer.parseInt(request.getParameter("flight_id"));
-        FlightServiceImpl.getInstance().delete(id);
-        List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+        flightService.delete(id);
+        List<Flight> flights = flightService.getAll();
         request.setAttribute("flights", flights);
         LOG.info("Flight deleted successfully");
 

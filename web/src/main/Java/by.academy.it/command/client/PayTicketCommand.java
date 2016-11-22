@@ -16,15 +16,17 @@ public class PayTicketCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(PayTicketCommand.class);
+        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
+        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
 
         HttpSession session = request.getSession(true);
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
-        TicketServiceImpl.getInstance().payTicket(ticketId);
-        List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+        ticketService.payTicket(ticketId);
+        List<Flight> flights = flightService.getAll();
         request.setAttribute("flights", flights);
         int userId = (Integer) session.getAttribute("userid");
-        List<Ticket> tickets = TicketServiceImpl.getInstance().getAllByUser(userId);
+        List<Ticket> tickets = ticketService.getAllByUser(userId);
         request.setAttribute("tickets", tickets);
         LOG.info("Ticket payed successfully");
 

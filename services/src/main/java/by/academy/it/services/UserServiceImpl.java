@@ -8,10 +8,13 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class UserServiceImpl implements IService<User> {
+public class UserServiceImpl implements Service<User> {
     private static UserServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(UserServiceImpl.class);
-    protected static HibernateUtil util = HibernateUtil.getInstance();
+    private UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private HibernateUtil util = HibernateUtil.getInstance();
+    private Session session = null;
+    private Transaction transaction = null;
 
     public UserServiceImpl() {
     }
@@ -26,33 +29,32 @@ public class UserServiceImpl implements IService<User> {
         if (enterLogin.equals("") || enterPass.equals("")) {
             return passCheckResult;
         }
-        Session session = util.getSession();
-        Transaction transaction = null;
+        session = util.getSession();
         transaction = session.beginTransaction();
-        passCheckResult = UserDaoImpl.getInstance().getPassword(enterLogin).equals(enterPass);
-        transaction.commit();
+        try {
+            passCheckResult = userDao.getPassword(enterLogin).equals(enterPass);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error check login: ", e);
+        }
         return passCheckResult;
     }
 
-    public void create(User user) {
-        Session session = util.getSession();
-        Transaction transaction = null;
+    public void createOrUpdate(User user) {
+        session = util.getSession();
         transaction = session.beginTransaction();
         try {
-            UserDaoImpl.getInstance().create(user);
+            userDao.create(user);
+            transaction.commit();
         } catch (DaoException e) {
             transaction.rollback();
-            LOG.error("Exception", e);
+            LOG.error("Error create or update user: ", e);
         }
-        transaction.commit();
     }
 
     public User findEntityById(Integer id) {
         return null;
-    }
-
-    public void update(User user) {
-
     }
 
     public void delete(Integer id) {
@@ -61,12 +63,15 @@ public class UserServiceImpl implements IService<User> {
 
     public User getUserByLogin(String login) {
         User user = null;
-        Session session = util.getSession();
-        Transaction transaction = null;
+        session = util.getSession();
         transaction = session.beginTransaction();
-        user = UserDaoImpl.getInstance().getUserByLogin(login);
-        transaction.commit();
-        LOG.error("User got by login");
+        try {
+            user = userDao.getUserByLogin(login);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error get user: ", e);
+        }
         return user;
     }
 }

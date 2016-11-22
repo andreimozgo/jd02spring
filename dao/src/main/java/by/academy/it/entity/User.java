@@ -4,12 +4,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
-public class User extends AbstractEntity {
-
+public class User extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,5 +62,13 @@ public class User extends AbstractEntity {
         this.userRole = userRole;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", userRole='" + userRole + '\'' +
+                '}';
+    }
 }
 

@@ -16,31 +16,33 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class LoginCommand implements ActionCommand {
-    private static final String PARAM_NAME_LOGIN = "login";
-    private static final String PARAM_NAME_PASSWORD = "password";
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(LoginCommand.class);
+        UserServiceImpl userService = UserServiceImpl.getInstance();
+        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
+        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
         String userRole;
+
         // getting login and password from request
-        String login = request.getParameter(PARAM_NAME_LOGIN);
-        String pass = request.getParameter(PARAM_NAME_PASSWORD);
+        String login = request.getParameter("login");
+        String pass = request.getParameter("password");
         // login and password check
-        if (UserServiceImpl.getInstance().checkLogin(login, pass)) {
+        if (userService.checkLogin(login, pass)) {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", login);
             // getting user role
-            User user = UserServiceImpl.getInstance().getUserByLogin(login);
+            User user = userService.getUserByLogin(login);
             userRole = user.getUserRole();
             int id = user.getId();
             // setting user role to session
             session.setAttribute("role", userRole);
             session.setAttribute("userid", id);
             session.setAttribute("user", login);
-            List<Ticket> tickets = TicketServiceImpl.getInstance().getAllByUser(id);
+            List<Ticket> tickets = ticketService.getAllByUser(id);
             request.setAttribute("tickets", tickets);
-            List<Flight> flights = FlightServiceImpl.getInstance().getAll();
+            List<Flight> flights = flightService.getAll();
             request.setAttribute("flights", flights);
             LOG.info("User " + login + " logged in successfully");
 

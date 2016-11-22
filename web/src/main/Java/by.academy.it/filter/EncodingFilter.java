@@ -1,4 +1,6 @@
-package by.academy.it.services;
+package by.academy.it.filter;
+
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -9,6 +11,7 @@ import java.io.IOException;
         @WebInitParam (name = "encoding", value = "UTF-8", description = "Encoding Param") })
 
 public class EncodingFilter implements Filter {
+    final Logger LOG = Logger.getLogger(EncodingFilter.class);
     private String code;
 
     public void init(FilterConfig fConfig) throws ServletException {
@@ -17,10 +20,11 @@ public class EncodingFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String codeRequest = request.getCharacterEncoding();
-        // установка кодировки из параметров фильтра, если не установлена
+        // set encoding if don't exist
         if (code != null && !code.equalsIgnoreCase(codeRequest)) {
             request.setCharacterEncoding(code);
             response.setCharacterEncoding(code);
+            LOG.info("Encoding changed to UTF-8 successfully");
         }
 
         chain.doFilter(request, response); }

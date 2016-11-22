@@ -1,10 +1,26 @@
 package by.academy.it.entity;
 
-public class Ticket extends AbstractEntity {
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
+public class Ticket extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "ticket_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "flight_id")
     private int fligthId;
+    @Column(name = "user_id")
     private int userId;
+    @Column(name = "cost")
     private int cost;
+    @Column(name = "paid")
     private int paid;
 
     public Ticket() {
@@ -57,6 +73,17 @@ public class Ticket extends AbstractEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", fligthId=" + fligthId +
+                ", userId=" + userId +
+                ", cost=" + cost +
+                ", paid=" + paid +
+                '}';
     }
 }
 

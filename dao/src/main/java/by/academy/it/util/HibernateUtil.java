@@ -21,7 +21,7 @@ public class HibernateUtil {
         }
     }
 
-    public static HibernateUtil getInstance() {
+    public static synchronized HibernateUtil getInstance() {
         if (util == null) {
             util = new HibernateUtil();
         }

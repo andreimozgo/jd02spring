@@ -12,13 +12,14 @@ public class AddRegistrationCommand implements ActionCommand {
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(AddRegistrationCommand.class);
+        UserServiceImpl userService = UserServiceImpl.getInstance();
         String page;
 
         String login = request.getParameter("login");
-            String password = request.getParameter("password");
-            User user = new User(login, password);
-            UserServiceImpl.getInstance().create(user);
-            LOG.info("New registration added successfully");
+        String password = request.getParameter("password");
+        User user = new User(login, password);
+        userService.createOrUpdate(user);
+        LOG.info("New registration added successfully");
 
         page = ConfigurationManager.getProperty("path.page.login");
         return page;
