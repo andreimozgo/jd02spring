@@ -38,10 +38,24 @@ ${user}, hello!
             <input type="hidden" name="command" value="addflight"/>
             <input type="submit" value="add flight"/>
         </div>
-
     </form>
-
 </table>
+<br>
+<form method="post" action="controller">
+    <td>Количество строк на страницу:</td>
+    <td>
+        <div>
+            <select name="recordsPerPage">
+                <option value="${recordsPerPage}"></option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+    </td>
+    <input type="hidden" name="command" value="adminpage"/>
+    <input type="submit" value="Поиск"/>
+</form>
 <table border="1">
  <thead align = "center">
  <tr>
@@ -71,6 +85,7 @@ ${user}, hello!
         ${role}</td>
     </tbody>
 </table>
+<br>
 <c:choose>
     <c:when test="${currentPage != 1}">
         <td><a href="controller?command=adminpage&currentPage=${currentPage - 1}">Предыдущая</a></td>
@@ -87,7 +102,7 @@ ${user}, hello!
 <td>
     <select onchange="location.href=this.value">
         <option>${currentPage}</option>
-        <c:forEach begin="2" end="${numberOfPages-1}" var="i">
+        <c:forEach begin="2" end="${numberOfPages-0}" var="i">
         <c:choose>
         <c:when test="${currentPage eq i}">
 <td>${i}</td>

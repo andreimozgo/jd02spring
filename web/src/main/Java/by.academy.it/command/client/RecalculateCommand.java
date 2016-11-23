@@ -3,8 +3,8 @@ package by.academy.it.command.client;
 import by.academy.it.command.ActionCommand;
 import by.academy.it.entity.Extra;
 import by.academy.it.entity.Ticket;
-import by.academy.it.services.ExtraServiceImpl;
-import by.academy.it.services.TicketServiceImpl;
+import by.academy.it.services.impl.ExtraServiceImpl;
+import by.academy.it.services.impl.TicketServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

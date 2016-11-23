@@ -3,7 +3,7 @@ package by.academy.it.command.user;
 import by.academy.it.command.ActionCommand;
 import by.academy.it.command.ConfigurationManager;
 import by.academy.it.entity.User;
-import by.academy.it.services.UserServiceImpl;
+import by.academy.it.services.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

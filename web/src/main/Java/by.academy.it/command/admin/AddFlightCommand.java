@@ -3,7 +3,7 @@ package by.academy.it.command.admin;
 import by.academy.it.command.ActionCommand;
 import by.academy.it.command.ConfigurationManager;
 import by.academy.it.entity.Flight;
-import by.academy.it.services.FlightServiceImpl;
+import by.academy.it.services.impl.FlightServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

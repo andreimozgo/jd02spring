@@ -6,9 +6,9 @@ import by.academy.it.command.MessageManager;
 import by.academy.it.command.admin.AdminPageCommand;
 import by.academy.it.command.client.ClientPageCommand;
 import by.academy.it.entity.User;
-import by.academy.it.services.FlightServiceImpl;
-import by.academy.it.services.TicketServiceImpl;
-import by.academy.it.services.UserServiceImpl;
+import by.academy.it.services.impl.FlightServiceImpl;
+import by.academy.it.services.impl.TicketServiceImpl;
+import by.academy.it.services.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

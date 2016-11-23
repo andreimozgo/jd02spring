@@ -4,8 +4,8 @@ import by.academy.it.command.ActionCommand;
 import by.academy.it.command.ConfigurationManager;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
-import by.academy.it.services.FlightServiceImpl;
-import by.academy.it.services.TicketServiceImpl;
+import by.academy.it.services.impl.FlightServiceImpl;
+import by.academy.it.services.impl.TicketServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,12 @@ public class AdminPageCommand implements ActionCommand {
         List<Ticket> tickets = ticketService.getAll();
         request.setAttribute("tickets", tickets);
 
-        recordsPerPage = 3;
+        if (request.getParameter("recordsPerPage") != null) {
+            recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
+        } else {
+            recordsPerPage = 3;
+        }
+
         if (request.getParameter("currentPage") != null) {
             currentPage = Integer.valueOf(request.getParameter("currentPage"));
         } else {

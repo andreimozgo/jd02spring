@@ -1,22 +1,18 @@
-package by.academy.it.services;
+package by.academy.it.services.impl;
 
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.FlightDaoImpl;
 import by.academy.it.entity.Flight;
-import by.academy.it.util.HibernateUtil;
+import by.academy.it.services.AbstractService;
+import by.academy.it.services.FlightService;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class FlightServiceImpl implements Service<Flight> {
+public class FlightServiceImpl extends AbstractService<Flight> implements FlightService {
     private static FlightServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(FlightServiceImpl.class);
     private FlightDaoImpl flightDao = FlightDaoImpl.getInstance();
-    private HibernateUtil util = HibernateUtil.getInstance();
-    private Session session;
-    private Transaction transaction;
 
     public FlightServiceImpl() {
     }

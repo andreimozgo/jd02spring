@@ -1,24 +1,20 @@
-package by.academy.it.services;
+package by.academy.it.services.impl;
 
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.UserDaoImpl;
 import by.academy.it.entity.User;
-import by.academy.it.util.HibernateUtil;
+import by.academy.it.services.AbstractService;
+import by.academy.it.services.UserService;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class UserServiceImpl implements Service<User> {
+public class UserServiceImpl extends AbstractService<User> implements UserService {
     private static UserServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(UserServiceImpl.class);
     private UserDaoImpl userDao = UserDaoImpl.getInstance();
-    private HibernateUtil util = HibernateUtil.getInstance();
-    private Session session = null;
-    private Transaction transaction = null;
 
     public UserServiceImpl() {
     }

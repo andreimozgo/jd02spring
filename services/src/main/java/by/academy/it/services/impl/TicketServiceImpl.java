@@ -1,22 +1,18 @@
-package by.academy.it.services;
+package by.academy.it.services.impl;
 
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.dao.impl.TicketDaoImpl;
 import by.academy.it.entity.Ticket;
-import by.academy.it.util.HibernateUtil;
+import by.academy.it.services.AbstractService;
+import by.academy.it.services.TicketService;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class TicketServiceImpl implements Service<Ticket> {
+public class TicketServiceImpl extends AbstractService<Ticket> implements TicketService {
     private static TicketServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(TicketServiceImpl.class);
     private TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
-    private HibernateUtil util = HibernateUtil.getInstance();
-    private Session session = null;
-    private Transaction transaction = null;
 
     public TicketServiceImpl() {
     }

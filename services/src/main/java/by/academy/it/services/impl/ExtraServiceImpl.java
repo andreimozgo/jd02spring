@@ -1,20 +1,14 @@
-package by.academy.it.services;
+package by.academy.it.services.impl;
 
 import by.academy.it.dao.exceptions.DaoException;
-import by.academy.it.dao.impl.ExtraDaoImpl;
 import by.academy.it.entity.Extra;
-import by.academy.it.util.HibernateUtil;
+import by.academy.it.services.AbstractService;
+import by.academy.it.services.ExtraService;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-public class ExtraServiceImpl implements Service<Extra> {
+public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraService {
     private static ExtraServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(ExtraServiceImpl.class);
-    private ExtraDaoImpl optionDao = ExtraDaoImpl.getInstance();
-    private HibernateUtil util = HibernateUtil.getInstance();
-    private Session session = null;
-    private Transaction transaction = null;
 
     public ExtraServiceImpl() {
     }
