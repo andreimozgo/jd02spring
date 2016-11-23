@@ -22,12 +22,25 @@ public class TicketDaoImpl extends BaseDao<Ticket> implements TicketDao {
     }
 
     public List getAllByUser(int userId) throws DaoException {
-        String hql = "FROM Ticket T WHERE T.userId=:userId";
+        String GET_ALL_TICKETS_BY_USER = "FROM Ticket T WHERE T.userId=:userId";
         List<Ticket> tickets;
         try {
             session = util.getSession();
-            Query query = session.createQuery(hql);
+            Query query = session.createQuery(GET_ALL_TICKETS_BY_USER);
             query.setParameter("userId", userId);
+            tickets = query.list();
+        } catch (HibernateException e) {
+            throw new DaoException(e);
+        }
+        return tickets;
+    }
+
+    public List getAll() throws DaoException {
+        String GET_ALL_TICKETS = "FROM Ticket";
+        List<Ticket> tickets;
+        try {
+            session = util.getSession();
+            Query query = session.createQuery(GET_ALL_TICKETS);
             tickets = query.list();
         } catch (HibernateException e) {
             throw new DaoException(e);

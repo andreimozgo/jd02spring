@@ -1,8 +1,10 @@
 package by.academy.it.command;
 
 import by.academy.it.command.admin.AddFlightCommand;
+import by.academy.it.command.admin.AdminPageCommand;
 import by.academy.it.command.admin.DeleteFlightCommand;
 import by.academy.it.command.client.BuyTicketCommand;
+import by.academy.it.command.client.ClientPageCommand;
 import by.academy.it.command.client.PayTicketCommand;
 import by.academy.it.command.client.RecalculateCommand;
 import by.academy.it.command.user.AddRegistrationCommand;
@@ -54,6 +56,16 @@ public enum CommandEnum {
     PAYTICKET {
         {
             this.command = new PayTicketCommand();
+        }
+    },
+    CLIENTPAGE {
+        {
+            this.command = new ClientPageCommand();
+        }
+    },
+    ADMINPAGE {
+        {
+            this.command = new AdminPageCommand();
         }
     };
 

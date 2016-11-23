@@ -8,6 +8,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class UserServiceImpl implements Service<User> {
     private static UserServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(UserServiceImpl.class);
@@ -32,7 +36,7 @@ public class UserServiceImpl implements Service<User> {
         session = util.getSession();
         transaction = session.beginTransaction();
         try {
-            passCheckResult = userDao.getPassword(enterLogin).equals(enterPass);
+            passCheckResult = userDao.getPassword(enterLogin).equals(hash(enterPass));
             transaction.commit();
         } catch (DaoException e) {
             transaction.rollback();
@@ -45,6 +49,8 @@ public class UserServiceImpl implements Service<User> {
         session = util.getSession();
         transaction = session.beginTransaction();
         try {
+            String pass = user.getPassword();
+            user.setPassword(hash(pass));
             userDao.create(user);
             transaction.commit();
         } catch (DaoException e) {
@@ -73,5 +79,21 @@ public class UserServiceImpl implements Service<User> {
             LOG.error("Error get user: ", e);
         }
         return user;
+    }
+
+    public String hash(String input) {
+        String md5Hashed = null;
+        if (null == input) {
+            return null;
+        }
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(input.getBytes(), 0, input.length());
+            md5Hashed = new BigInteger(1, digest.digest()).toString(16);
+
+        } catch (NoSuchAlgorithmException e) {
+            LOG.error("Error in hash UserService: ", e);
+        }
+        return md5Hashed;
     }
 }

@@ -40,6 +40,20 @@ public class TicketServiceImpl implements Service<Ticket> {
         return tickets;
     }
 
+    public List<Ticket> getAll() {
+        List<Ticket> tickets = null;
+        session = util.getSession();
+        transaction = session.beginTransaction();
+        try {
+            tickets = ticketDao.getAll();
+            transaction.commit();
+        } catch (DaoException e) {
+            LOG.error("Error get all tickets: ", e);
+            transaction.rollback();
+        }
+        return tickets;
+    }
+
     public void createOrUpdate(Ticket ticket) {
         session = util.getSession();
         transaction = session.beginTransaction();

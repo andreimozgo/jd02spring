@@ -8,6 +8,10 @@ public class DaoException extends Throwable {
         this.exception = exception;
     }
 
+    public DaoException() {
+
+    }
+
     public Exception getException() {
         return exception;
     }

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
@@ -22,6 +24,11 @@ public class Ticket extends AbstractEntity implements Serializable {
     private int cost;
     @Column(name = "paid")
     private int paid;
+    @ManyToMany
+    @JoinTable(name = "ticket_extra",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "extra_id"))
+    private Set<Extra> extras = new HashSet<Extra>();
 
     public Ticket() {
 
@@ -73,6 +80,14 @@ public class Ticket extends AbstractEntity implements Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setExtras(Set<Extra> extras) {
+        this.extras = extras;
+    }
+
+    public Set<Extra> getExtras() {
+        return extras;
     }
 
     @Override
