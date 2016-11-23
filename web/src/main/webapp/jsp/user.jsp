@@ -13,21 +13,39 @@ ${user}, hello!
 
 <h3>Расписание рейсов</h3>
 </head>
-<form method="post" action="controller">
-    <td>Количество строк на страницу:</td>
-    <td>
-        <div>
-            <select name="recordsPerPage">
-                <option value="${recordsPerPage}"></option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-    </td>
-    <input type="hidden" name="command" value="clientpage"/>
-    <input type="submit" value="Поиск"/>
-</form>
+<table>
+
+    <form method="post" action="controller">
+        <tr>
+            <td>Количество строк на страницу:</td>
+            <td>
+                <div>
+                    <select name="recordsPerPage">
+                        <option value="${recordsPerPage}"></option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label for="flightDate">Дата:</label><br>
+                    <input type="date" name="flightDate"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" name="command" value="clientpage"/>
+                <input type="submit" value="Поиск"/>
+            </td>
+        </tr>
+    </form>
+</table>
+<br>
 <table border="1">
     <thead align="center">
     <tr>

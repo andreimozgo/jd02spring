@@ -11,14 +11,15 @@ import java.io.IOException;
 @WebFilter(urlPatterns = {"/*"})
 public class CloseSessionFilter implements Filter {
     final Logger LOG = Logger.getLogger(CloseSessionFilter.class);
+    HibernateUtil util = HibernateUtil.getInstance();
 
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        Session session = HibernateUtil.getInstance().getSession();
-        HibernateUtil.getInstance().releaseSession(session);
+        Session session = util.getSession();
+        util.releaseSession(session);
         chain.doFilter(request, response);
         LOG.info("Hibernate session closed successfully");
     }

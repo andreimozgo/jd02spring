@@ -75,10 +75,6 @@ public class Flight extends AbstractEntity implements Serializable {
         this.upCost = upCost;
     }
 
-    public boolean equals(Object obj) {
-        return false;
-    }
-
     public String toString() {
         return "Flight{" +
                 "id=" + id +
@@ -87,6 +83,28 @@ public class Flight extends AbstractEntity implements Serializable {
                 ", cost=" + cost +
                 ", upCost=" + upCost +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = date.hashCode();
+        result = 31 * result + seats;
+        result = 31 * result + cost;
+        result = 31 * result + (int) upCost;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Flight)) return false;
+
+        Flight flight = (Flight) o;
+
+        if (seats != flight.seats) return false;
+        if (cost != flight.cost) return false;
+        if (upCost != flight.upCost) return false;
+        return date.equals(flight.date);
     }
 }
 

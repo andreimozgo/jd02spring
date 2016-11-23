@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
     private final Logger LOG = Logger.getLogger(HibernateUtil.class);
@@ -14,7 +16,9 @@ public class HibernateUtil {
 
     private HibernateUtil() {
         try {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
+            Configuration configuration = new Configuration().configure();
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (Throwable e) {
             LOG.error("Initial session factory creation failed ", e);
             throw new ExceptionInInitializerError(e);
@@ -40,6 +44,7 @@ public class HibernateUtil {
     public void releaseSession(Session session) {
         if (session != null) {
             try {
+                session.close();
                 sessions.remove();
             } catch (HibernateException e) {
                 LOG.error(e);

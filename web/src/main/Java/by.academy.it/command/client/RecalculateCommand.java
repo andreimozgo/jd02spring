@@ -23,15 +23,35 @@ public class RecalculateCommand implements ActionCommand {
         ExtraServiceImpl extraServiceImpl = ExtraServiceImpl.getInstance();
         if (Integer.parseInt(request.getParameter("baggage")) == 1) {
             Extra extra = extraServiceImpl.findEntityById(1);
+            ticket.getExtras().add(extra);
             cost += extra.getCost();
         }
+        if (Integer.parseInt(request.getParameter("baggage")) == 0) {
+            Extra extra = extraServiceImpl.findEntityById(1);
+            ticket.getExtras().remove(extra);
+            cost -= extra.getCost();
+        }
+
         if (Integer.parseInt(request.getParameter("priorityregistration")) == 1) {
             Extra extra = extraServiceImpl.findEntityById(2);
+            ticket.getExtras().add(extra);
             cost += extra.getCost();
         }
+        if (Integer.parseInt(request.getParameter("priorityregistration")) == 0) {
+            Extra extra = extraServiceImpl.findEntityById(2);
+            ticket.getExtras().remove(extra);
+            cost -= extra.getCost();
+        }
+
         if (Integer.parseInt(request.getParameter("priorityboarding")) == 1) {
             Extra extra = extraServiceImpl.findEntityById(3);
+            ticket.getExtras().add(extra);
             cost += extra.getCost();
+        }
+        if (Integer.parseInt(request.getParameter("priorityboarding")) == 0) {
+            Extra extra = extraServiceImpl.findEntityById(3);
+            ticket.getExtras().remove(extra);
+            cost -= extra.getCost();
         }
         ticket.setCost(cost);
         ticketService.createOrUpdate(ticket);

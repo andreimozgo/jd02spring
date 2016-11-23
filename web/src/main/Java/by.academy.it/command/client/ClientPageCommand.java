@@ -21,6 +21,8 @@ public class ClientPageCommand implements ActionCommand {
         String page;
         int currentPage;
         int recordsPerPage;
+        String flightDate;
+        List<Flight> flights;
 
         HttpSession session = request.getSession(true);
         int userId = (Integer) session.getAttribute("userid");
@@ -38,8 +40,16 @@ public class ClientPageCommand implements ActionCommand {
         } else {
             currentPage = 1;
         }
+
+        if (request.getParameter("flightDate") != null) {
+            flightDate = request.getParameter("flightDate");
+            flights = flightService.getAll(recordsPerPage, currentPage);
+        } else {
+            flights = flightService.getAll(recordsPerPage, currentPage);
+        }
+
         int numberOfPages = flightService.getNumberOfPages(recordsPerPage);
-        List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
+        //List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
         request.setAttribute("flights", flights);
         request.setAttribute("numberOfPages", numberOfPages);
         request.setAttribute("currentPage", currentPage);
