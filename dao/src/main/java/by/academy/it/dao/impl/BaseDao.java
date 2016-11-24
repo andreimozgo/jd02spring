@@ -41,10 +41,9 @@ public class BaseDao<T extends AbstractEntity> implements Dao<T> {
     }
 
     public void delete(Integer id) throws DaoException {
-        T t;
         try {
             session = util.getSession();
-            t = (T) session.get(getPersistentClass(), id);
+            T t = (T) session.get(getPersistentClass(), id);
             session.delete(t);
             log.info("Deleted: " + t);
         } catch (HibernateException e) {

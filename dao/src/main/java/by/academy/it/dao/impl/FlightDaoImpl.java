@@ -59,7 +59,6 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
             session = util.getSession();
             Criteria criteria = session.createCriteria(Flight.class);
             criteria.setProjection(Projections.rowCount());
-            criteria.setCacheable(true);
             amount = (Long) criteria.uniqueResult();
             LOG.info("Amount of flights: " + amount);
         } catch (HibernateException e) {
