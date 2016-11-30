@@ -34,7 +34,9 @@ public class LoginCommand implements ActionCommand {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", login);
             // getting user role
+            LOG.info("Truing to get user" + login);
             User user = userService.getUserByLogin(login);
+            LOG.info("User " + login + " got successfully");
             userRole = user.getUserRole();
             int id = user.getId();
             // setting user role to session

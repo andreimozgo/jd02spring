@@ -23,7 +23,7 @@ public class BuyTicketCommand implements ActionCommand {
         int userId = (Integer) session.getAttribute("userid");
         Flight flight = flightService.findEntityById(flightId);
         int cost = flight.getCost();
-        Ticket ticket = new Ticket(0, flightId, userId, cost, 0);
+        Ticket ticket = new Ticket(0, flight, userId, cost, 0);
         ticketService.createOrUpdate(ticket);
         LOG.info("User bought ticket successfully");
 

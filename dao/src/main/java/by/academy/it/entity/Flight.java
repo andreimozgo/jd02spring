@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
@@ -22,6 +23,8 @@ public class Flight extends AbstractEntity implements Serializable {
     private int cost;
     @Column(name = "up_cost")
     private byte upCost;
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.REMOVE)
+    private Set<Ticket> tickets;
 
     public Flight() {
     }
@@ -73,6 +76,14 @@ public class Flight extends AbstractEntity implements Serializable {
 
     public void setUpCost(byte upCost) {
         this.upCost = upCost;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public String toString() {

@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     final Logger LOG = Logger.getLogger(FlightDaoImpl.class);
     private static FlightDaoImpl instance = null;
     private final String GET_ALL_FLIGHTS = "FROM Flight";
+    private final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=";
 
     private FlightDaoImpl() {
     }
@@ -53,11 +55,46 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
         return flights;
     }
 
+    public List getAll(int recordsPerPage, int currentPage, String flightDate) throws DaoException {
+        List<Flight> flights;
+        final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=:flightDate";
+        try {
+            session = util.getSession();
+            LOG.info("FlightDate= " + flightDate);
+            Query query = session.createQuery(GET_ALL_FLIGHTS_BY_DATE);
+            query.setParameter("flightDate", flightDate);
+            query.setFirstResult((currentPage - 1) * recordsPerPage);
+            query.setMaxResults(recordsPerPage);
+            query.setCacheable(true);
+            query.setCacheMode(CacheMode.NORMAL);
+            flights = query.list();
+        } catch (HibernateException e) {
+            throw new DaoException(e);
+        }
+        return flights;
+    }
+
     public Long getAmount() throws DaoException {
         Long amount;
         try {
             session = util.getSession();
             Criteria criteria = session.createCriteria(Flight.class);
+            criteria.setProjection(Projections.rowCount());
+            amount = (Long) criteria.uniqueResult();
+            LOG.info("Amount of flights: " + amount);
+        } catch (HibernateException e) {
+            LOG.error("Unable to get number of flights. Error in DAO");
+            throw new DaoException(e);
+        }
+        return amount;
+    }
+
+    public Long getAmount(String flightDate) throws DaoException {
+        Long amount;
+        try {
+            session = util.getSession();
+            Criteria criteria = session.createCriteria(Flight.class);
+            criteria.add(Restrictions.eq("date", flightDate));
             criteria.setProjection(Projections.rowCount());
             amount = (Long) criteria.uniqueResult();
             LOG.info("Amount of flights: " + amount);

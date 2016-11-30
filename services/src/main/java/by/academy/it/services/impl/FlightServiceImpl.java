@@ -50,6 +50,20 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
         return flights;
     }
 
+    public List<Flight> getAll(int recordsPerPage, int currentPage, String flightDate) {
+        List<Flight> flights = null;
+        session = util.getSession();
+        try {
+            transaction = session.beginTransaction();
+            flights = flightDao.getAll(recordsPerPage, currentPage, flightDate);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error get all flights: ", e);
+        }
+        return flights;
+    }
+
     public void createOrUpdate(Flight flight) {
         session = util.getSession();
         try {
@@ -94,7 +108,25 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
         try {
             transaction = session.beginTransaction();
             Long numberOfRecords = flightDao.getAmount();
-            numberOfPages = (int) Math.ceil(numberOfRecords * 1.0 / recordsPerPage);
+            numberOfPages = Math.round(numberOfRecords / recordsPerPage);
+            if ((numberOfRecords % recordsPerPage) > 0) numberOfPages++;
+            transaction.commit();
+            LOG.info("Count of flight pages: " + numberOfPages);
+        } catch (DaoException e) {
+            transaction.rollback();
+            LOG.error("Error getting count of flight pages", e);
+        }
+        return numberOfPages;
+    }
+
+    public int getNumberOfPages(int recordsPerPage, String flightDate) {
+        int numberOfPages = 1;
+        session = util.getSession();
+        try {
+            transaction = session.beginTransaction();
+            Long numberOfRecords = flightDao.getAmount(flightDate);
+            numberOfPages = Math.round(numberOfRecords / recordsPerPage);
+            if ((numberOfRecords % recordsPerPage) > 0) numberOfPages++;
             transaction.commit();
             LOG.info("Count of flight pages: " + numberOfPages);
         } catch (DaoException e) {

@@ -40,15 +40,17 @@ public class ClientPageCommand implements ActionCommand {
         } else {
             currentPage = 1;
         }
-
+        int numberOfPages;
         if (request.getParameter("flightDate") != null) {
             flightDate = request.getParameter("flightDate");
-            flights = flightService.getAll(recordsPerPage, currentPage);
+            LOG.info("FlightDate= " + flightDate);
+            flights = flightService.getAll(recordsPerPage, currentPage, flightDate);
+            numberOfPages = flightService.getNumberOfPages(recordsPerPage, flightDate);
         } else {
             flights = flightService.getAll(recordsPerPage, currentPage);
+            numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         }
 
-        int numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         //List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
         request.setAttribute("flights", flights);
         request.setAttribute("numberOfPages", numberOfPages);

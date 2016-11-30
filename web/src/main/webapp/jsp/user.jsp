@@ -28,7 +28,13 @@ ${user}, hello!
                     </select>
                 </div>
             </td>
+            <td>
+                <input type="hidden" name="command" value="clientpage"/>
+                <input type="submit" value="Поиск"/>
+            </td>
         </tr>
+    </form>
+    <form method="post" action="controller">
         <tr>
             <td>
                 <div>
@@ -36,8 +42,6 @@ ${user}, hello!
                     <input type="date" name="flightDate"/>
                 </div>
             </td>
-        </tr>
-        <tr>
             <td>
                 <input type="hidden" name="command" value="clientpage"/>
                 <input type="submit" value="Поиск"/>
@@ -132,7 +136,7 @@ ${user}, hello!
         <tr>
             <form method="post" action="controller">
                 <td><c:out value="${ticket.id}"/></td>
-                <td><c:out value="${ticket.fligthId}"/></td>
+                <td><c:out value="${ticket.flight.id}"/></td>
                 <td>
                     <div>
                         <select name="baggage">
@@ -158,7 +162,14 @@ ${user}, hello!
                     </div>
                 </td>
                 <td><c:out value="${ticket.cost}"/></td>
-                <td><c:out value="${ticket.paid}"/></td>
+                <c:choose>
+                    <c:when test="${ticket.paid == 0}">
+                        <td><font color="red">Не оплачен</font></td>
+                    </c:when>
+                    <c:when test="${ticket.paid == 1}">
+                        <td><font color="green">Оплачен</font></td>
+                    </c:when>
+                </c:choose>
                 <td><input type="hidden" name="command" value="recalculate"/>
                     <input type="hidden" name="ticket_id" value="${ticket.id}">
                     <input type="hidden" name="baggage" value="1"><input

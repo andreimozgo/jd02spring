@@ -16,8 +16,10 @@ public class Ticket extends AbstractEntity implements Serializable {
     @Column(name = "ticket_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "flight_id")
-    private int fligthId;
+
+    @ManyToOne
+    @JoinColumn(name = "flight_id")
+    private Flight flight;
     @Column(name = "user_id")
     private int userId;
     @Column(name = "cost")
@@ -34,17 +36,15 @@ public class Ticket extends AbstractEntity implements Serializable {
 
     }
 
-    public Ticket(int id, int flightId, int userId, int cost, int paid) {
+    public Ticket(int id, Flight flight, int userId, int cost, int paid) {
         this.id = id;
-        this.fligthId = flightId;
+        this.flight = flight;
         this.userId = userId;
         this.cost = cost;
         this.paid = paid;
     }
 
-    public int getFligthId() {
-        return fligthId;
-    }
+
 
     public int getUserId() {
         return userId;
@@ -74,10 +74,6 @@ public class Ticket extends AbstractEntity implements Serializable {
         this.id = id;
     }
 
-    public void setFligthId(int fligthId) {
-        this.fligthId = fligthId;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -90,11 +86,19 @@ public class Ticket extends AbstractEntity implements Serializable {
         return extras;
     }
 
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
     @Override
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", fligthId=" + fligthId +
+                ", fligthId=" +
                 ", userId=" + userId +
                 ", cost=" + cost +
                 ", paid=" + paid +

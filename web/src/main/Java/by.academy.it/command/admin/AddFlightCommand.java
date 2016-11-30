@@ -1,13 +1,11 @@
 package by.academy.it.command.admin;
 
 import by.academy.it.command.ActionCommand;
-import by.academy.it.command.ConfigurationManager;
 import by.academy.it.entity.Flight;
 import by.academy.it.services.impl.FlightServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public class AddFlightCommand implements ActionCommand {
 
@@ -22,11 +20,12 @@ public class AddFlightCommand implements ActionCommand {
         byte upCost = Byte.parseByte(request.getParameter("upCost"));
         Flight flight = new Flight(null, date, seats, cost, upCost);
         flightService.createOrUpdate(flight);
-        List<Flight> flights = flightService.getAll();
-        request.setAttribute("flights", flights);
+        /*List<Flight> flights = flightService.getAll();
+        request.setAttribute("flights", flights);*/
         LOG.info("Flight added successfully");
 
-        page = ConfigurationManager.getProperty("path.page.main");
+        page = new AdminPageCommand().execute(request);
+
         return page;
     }
 }

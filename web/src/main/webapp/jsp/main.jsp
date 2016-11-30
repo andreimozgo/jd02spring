@@ -36,7 +36,7 @@ ${user}, hello!
         </div>
         <div>
             <input type="hidden" name="command" value="addflight"/>
-            <input type="submit" value="add flight"/>
+            <input type="submit" value="Добавить"/>
         </div>
     </form>
 </table>

@@ -37,8 +37,8 @@ public class AdminPageCommand implements ActionCommand {
         } else {
             currentPage = 1;
         }
-        int numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
+        int numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         request.setAttribute("flights", flights);
         request.setAttribute("numberOfPages", numberOfPages);
         request.setAttribute("currentPage", currentPage);
