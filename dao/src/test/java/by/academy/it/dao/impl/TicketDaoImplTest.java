@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TicketDaoImplTest extends Assert {
     TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
-    FlightDaoImpl flightDao = FlightDaoImpl.getInstance();
     Flight flight = new Flight(1, "2016-01-01", 20, 10, (byte) 1);
 
     @Test
@@ -53,5 +52,4 @@ public class TicketDaoImplTest extends Assert {
         List<Ticket> tickets = ticketDao.getAll();
         assertEquals(0, tickets.size());
     }
-
 }

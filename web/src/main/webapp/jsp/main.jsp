@@ -88,8 +88,9 @@ ${user}, hello!
 <br>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="controller?command=adminpage&currentPage=${currentPage - 1}">Предыдущая</a></td>
-        <td><a href="controller?command=adminpage&currentPage=1">1</a></td>
+        <td><a href="controller?command=adminpage&currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}">Предыдущая</a>
+        </td>
+        <td><a href="controller?command=adminpage&currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
         <td>Предыдущая</td>
@@ -108,7 +109,7 @@ ${user}, hello!
 <td>${i}</td>
 </c:when>
 <c:otherwise>
-    <option value="controller?command=adminpage&currentPage=${i}">${i}</option>
+    <option value="controller?command=adminpage&currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -116,8 +117,11 @@ ${user}, hello!
 </td>
 <c:choose>
     <c:when test="${currentPage lt numberOfPages}">
-        <td><a href="controller?command=adminpage&currentPage=${numberOfPages}">${numberOfPages}</a></td>
-        <td><a href="controller?command=adminpage&currentPage=${currentPage + 1}">Следующая</a></td>
+        <td>
+            <a href="controller?command=adminpage&currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
+        </td>
+        <td><a href="controller?command=adminpage&currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}">Следующая</a>
+        </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">
         <td>${numberOfPages}</td>
