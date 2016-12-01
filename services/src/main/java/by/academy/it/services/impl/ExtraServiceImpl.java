@@ -5,6 +5,7 @@ import by.academy.it.entity.Extra;
 import by.academy.it.services.AbstractService;
 import by.academy.it.services.ExtraService;
 import org.apache.log4j.Logger;
+import org.hibernate.Transaction;
 
 public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraService {
     private static ExtraServiceImpl instance = null;
@@ -24,9 +25,9 @@ public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraSer
 
     public Extra findEntityById(Integer id) {
         Extra extra = null;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            transaction = session.beginTransaction();
+
             extra = optionDao.findEntityById(id);
             transaction.commit();
         } catch (DaoException e) {

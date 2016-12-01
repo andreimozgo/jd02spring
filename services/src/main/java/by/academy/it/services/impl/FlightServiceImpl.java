@@ -6,6 +6,7 @@ import by.academy.it.entity.Flight;
 import by.academy.it.services.AbstractService;
 import by.academy.it.services.FlightService;
 import org.apache.log4j.Logger;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll() {
         List<Flight> flights = null;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flights = flightDao.getAll();
@@ -38,7 +39,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll(int recordsPerPage, int currentPage) {
         List<Flight> flights = null;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flights = flightDao.getAll(recordsPerPage, currentPage);
@@ -52,7 +53,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll(int recordsPerPage, int currentPage, String flightDate) {
         List<Flight> flights = null;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flights = flightDao.getAll(recordsPerPage, currentPage, flightDate);
@@ -65,7 +66,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public void createOrUpdate(Flight flight) {
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flightDao.create(flight);
@@ -77,7 +78,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public void delete(Integer id) {
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flightDao.delete(id);
@@ -90,7 +91,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public Flight findEntityById(Integer id) {
         Flight flight = null;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             flight = flightDao.findEntityById(id);
@@ -104,7 +105,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public int getNumberOfPages(int recordsPerPage) {
         int numberOfPages = 1;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             Long numberOfRecords = flightDao.getAmount();
@@ -121,7 +122,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public int getNumberOfPages(int recordsPerPage, String flightDate) {
         int numberOfPages = 1;
-        session = util.getSession();
+        Transaction transaction = session.beginTransaction();
         try {
             transaction = session.beginTransaction();
             Long numberOfRecords = flightDao.getAmount(flightDate);

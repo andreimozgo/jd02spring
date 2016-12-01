@@ -6,6 +6,7 @@ import by.academy.it.entity.User;
 import by.academy.it.services.AbstractService;
 import by.academy.it.services.UserService;
 import org.apache.log4j.Logger;
+import org.hibernate.Transaction;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -30,7 +31,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             return passCheckResult;
         }
         session = util.getSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         try {
             passCheckResult = userDao.getPassword(enterLogin).equals(hash(enterPass));
             transaction.commit();
@@ -42,8 +43,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public void createOrUpdate(User user) {
-        session = util.getSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         try {
             String pass = user.getPassword();
             user.setPassword(hash(pass));
@@ -65,8 +65,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     public User getUserByLogin(String login) {
         User user = null;
-        session = util.getSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         try {
             user = userDao.getUserByLogin(login);
             transaction.commit();
