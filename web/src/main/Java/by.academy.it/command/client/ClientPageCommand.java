@@ -51,7 +51,6 @@ public class ClientPageCommand implements ActionCommand {
             numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         }
 
-        //List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
         request.setAttribute("flights", flights);
         request.setAttribute("numberOfPages", numberOfPages);
         request.setAttribute("currentPage", currentPage);

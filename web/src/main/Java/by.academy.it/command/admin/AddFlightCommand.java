@@ -20,8 +20,6 @@ public class AddFlightCommand implements ActionCommand {
         byte upCost = Byte.parseByte(request.getParameter("upCost"));
         Flight flight = new Flight(null, date, seats, cost, upCost);
         flightService.createOrUpdate(flight);
-        /*List<Flight> flights = flightService.getAll();
-        request.setAttribute("flights", flights);*/
         LOG.info("Flight added successfully");
 
         page = new AdminPageCommand().execute(request);

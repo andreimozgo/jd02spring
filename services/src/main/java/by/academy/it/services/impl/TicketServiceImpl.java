@@ -26,7 +26,6 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     public List<Ticket> getAllByUser(int userId) {
         List<Ticket> tickets = null;
         Transaction transaction = session.beginTransaction();
-        transaction = session.beginTransaction();
         try {
             tickets = ticketDao.getAllByUser(userId);
             transaction.commit();
@@ -40,7 +39,6 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     public List<Ticket> getAll() {
         List<Ticket> tickets = null;
         Transaction transaction = session.beginTransaction();
-        transaction = session.beginTransaction();
         try {
             tickets = ticketDao.getAll();
             transaction.commit();

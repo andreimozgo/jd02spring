@@ -28,8 +28,6 @@ public class BuyTicketCommand implements ActionCommand {
         LOG.info("User bought ticket successfully");
 
         page = new ClientPageCommand().execute(request);
-
-        //page = ConfigurationManager.getProperty("path.page.user");
         return page;
     }
 }

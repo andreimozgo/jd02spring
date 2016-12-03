@@ -17,7 +17,7 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     final Logger LOG = Logger.getLogger(FlightDaoImpl.class);
     private static FlightDaoImpl instance = null;
     private final String GET_ALL_FLIGHTS = "FROM Flight";
-    private final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=";
+    private final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=:flightDate";
 
     private FlightDaoImpl() {
     }
@@ -57,7 +57,6 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
 
     public List getAll(int recordsPerPage, int currentPage, String flightDate) throws DaoException {
         List<Flight> flights;
-        final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=:flightDate";
         try {
             session = util.getSession();
             LOG.info("FlightDate= " + flightDate);

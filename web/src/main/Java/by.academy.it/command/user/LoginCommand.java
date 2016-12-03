@@ -6,8 +6,6 @@ import by.academy.it.command.MessageManager;
 import by.academy.it.command.admin.AdminPageCommand;
 import by.academy.it.command.client.ClientPageCommand;
 import by.academy.it.entity.User;
-import by.academy.it.services.impl.FlightServiceImpl;
-import by.academy.it.services.impl.TicketServiceImpl;
 import by.academy.it.services.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
@@ -19,12 +17,8 @@ public class LoginCommand implements ActionCommand {
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(LoginCommand.class);
         UserServiceImpl userService = UserServiceImpl.getInstance();
-        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
-        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
         String userRole;
-        int currentPage;
-        int recordsPerPage;
 
         // getting login and password from request
         String login = request.getParameter("login");
@@ -48,10 +42,8 @@ public class LoginCommand implements ActionCommand {
             // getting main.jsp page depending on user role
             if (userRole.equals("admin")) {
                 page = new AdminPageCommand().execute(request);
-                //page = ConfigurationManager.getProperty("path.page.main");
             } else {
                 page = new ClientPageCommand().execute(request);
-                //page = ConfigurationManager.getProperty("path.page.user");
             }
         } else {
             request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.loginerror"));

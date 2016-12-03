@@ -16,7 +16,6 @@ public class RecalculateCommand implements ActionCommand {
         TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
         String page;
 
-        //HttpSession session = request.getSession(true);
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
         Ticket ticket = ticketService.findEntityById(ticketId);
         int cost = ticket.getCost();
@@ -58,8 +57,6 @@ public class RecalculateCommand implements ActionCommand {
         LOG.info("Ticket recalculated successfully");
 
         page = new ClientPageCommand().execute(request);
-
-        //page = ConfigurationManager.getProperty("path.page.user");
         return page;
     }
 }

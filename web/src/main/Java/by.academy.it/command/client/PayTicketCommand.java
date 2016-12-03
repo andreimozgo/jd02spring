@@ -13,14 +13,11 @@ public class PayTicketCommand implements ActionCommand {
         TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
         String page;
 
-        //HttpSession session = request.getSession(true);
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
         ticketService.payTicket(ticketId);
         LOG.info("Ticket payed successfully");
 
         page = new ClientPageCommand().execute(request);
-
-        //page = ConfigurationManager.getProperty("path.page.user");
         return page;
     }
 }

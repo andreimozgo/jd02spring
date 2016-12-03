@@ -15,8 +15,6 @@ public class DeleteFlightCommand implements ActionCommand {
 
         int id = Integer.parseInt(request.getParameter("flight_id"));
         flightService.delete(id);
-        /*List<Flight> flights = flightService.getAll();
-        request.setAttribute("flights", flights);*/
         LOG.info("Flight deleted successfully");
 
         page = new AdminPageCommand().execute(request);
