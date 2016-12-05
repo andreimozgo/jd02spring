@@ -25,8 +25,9 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
 
     public List<Ticket> getAllByUser(int userId) {
         List<Ticket> tickets = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             tickets = ticketDao.getAllByUser(userId);
             transaction.commit();
         } catch (DaoException e) {
@@ -38,8 +39,9 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
 
     public List<Ticket> getAll() {
         List<Ticket> tickets = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             tickets = ticketDao.getAll();
             transaction.commit();
         } catch (DaoException e) {
@@ -50,8 +52,9 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     }
 
     public void createOrUpdate(Ticket ticket) {
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             ticketDao.create(ticket);
             transaction.commit();
         } catch (DaoException e) {
@@ -62,9 +65,9 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
 
     public Ticket findEntityById(Integer id) {
         Ticket ticket = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             ticket = ticketDao.findEntityById(id);
             transaction.commit();
         } catch (DaoException e) {
@@ -78,9 +81,9 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     }
 
     public void payTicket(Integer ticketId) {
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             Ticket ticket = ticketDao.findEntityById(ticketId);
             ticket.setPaid(1);
             ticketDao.create(ticket);

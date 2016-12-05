@@ -25,9 +25,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll() {
         List<Flight> flights = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flights = flightDao.getAll();
             transaction.commit();
         } catch (DaoException e) {
@@ -39,9 +39,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll(int recordsPerPage, int currentPage) {
         List<Flight> flights = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flights = flightDao.getAll(recordsPerPage, currentPage);
             transaction.commit();
         } catch (DaoException e) {
@@ -53,9 +53,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public List<Flight> getAll(int recordsPerPage, int currentPage, String flightDate) {
         List<Flight> flights = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flights = flightDao.getAll(recordsPerPage, currentPage, flightDate);
             transaction.commit();
         } catch (DaoException e) {
@@ -66,9 +66,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public void createOrUpdate(Flight flight) {
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flightDao.create(flight);
         } catch (DaoException e) {
             transaction.rollback();
@@ -78,9 +78,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public void delete(Integer id) {
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flightDao.delete(id);
             transaction.commit();
         } catch (DaoException e) {
@@ -91,9 +91,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public Flight findEntityById(Integer id) {
         Flight flight = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             flight = flightDao.findEntityById(id);
             transaction.commit();
         } catch (DaoException e) {
@@ -105,9 +105,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public int getNumberOfPages(int recordsPerPage) {
         int numberOfPages = 1;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             Long numberOfRecords = flightDao.getAmount();
             numberOfPages = Math.round(numberOfRecords / recordsPerPage);
             if ((numberOfRecords % recordsPerPage) > 0) numberOfPages++;
@@ -122,9 +122,9 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
 
     public int getNumberOfPages(int recordsPerPage, String flightDate) {
         int numberOfPages = 1;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-            transaction = session.beginTransaction();
+            transaction = util.getTransaction();
             Long numberOfRecords = flightDao.getAmount(flightDate);
             numberOfPages = Math.round(numberOfRecords / recordsPerPage);
             if ((numberOfRecords % recordsPerPage) > 0) numberOfPages++;

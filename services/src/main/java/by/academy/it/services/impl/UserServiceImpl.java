@@ -30,9 +30,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         if (enterLogin.equals("") || enterPass.equals("")) {
             return passCheckResult;
         }
-        session = util.getSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             passCheckResult = userDao.getPassword(enterLogin).equals(hash(enterPass));
             transaction.commit();
         } catch (DaoException e) {
@@ -43,8 +43,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public void createOrUpdate(User user) {
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             String pass = user.getPassword();
             user.setPassword(hash(pass));
             userDao.create(user);
@@ -65,8 +66,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     public User getUserByLogin(String login) {
         User user = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
+            transaction = util.getTransaction();
             user = userDao.getUserByLogin(login);
             transaction.commit();
         } catch (DaoException e) {

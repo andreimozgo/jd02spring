@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -50,5 +51,10 @@ public class HibernateUtil {
                 LOG.error(e);
             }
         }
+    }
+
+    public Transaction getTransaction(){
+        Session session = getSession();
+        return session.beginTransaction();
     }
 }

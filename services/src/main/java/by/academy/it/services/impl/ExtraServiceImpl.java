@@ -25,9 +25,9 @@ public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraSer
 
     public Extra findEntityById(Integer id) {
         Extra extra = null;
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction=null;
         try {
-
+            transaction = util.getTransaction();
             extra = optionDao.findEntityById(id);
             transaction.commit();
         } catch (DaoException e) {
