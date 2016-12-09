@@ -3,19 +3,25 @@ package by.academy.it.command.client;
 import by.academy.it.command.ActionCommand;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
-import by.academy.it.services.impl.FlightServiceImpl;
-import by.academy.it.services.impl.TicketServiceImpl;
+import by.academy.it.services.FlightService;
+import by.academy.it.services.TicketService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@Component
 public class BuyTicketCommand implements ActionCommand {
+
+    @Autowired
+    private FlightService flightService;
+    @Autowired
+    private TicketService ticketService;
 
     public String execute(HttpServletRequest request) {
         final Logger LOG = Logger.getLogger(BuyTicketCommand.class);
-        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
-        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
 
         HttpSession session = request.getSession(true);

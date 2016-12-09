@@ -4,11 +4,13 @@ import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class FlightDaoImplTest extends Assert {
-    FlightDaoImpl flightDao = FlightDaoImpl.getInstance();
+    @Autowired
+    FlightDaoImpl flightDao;
 
     @Test
     public void testCreate() throws DaoException {

@@ -1,20 +1,26 @@
 package by.academy.it.command.admin;
 
 import by.academy.it.command.ActionCommand;
-import by.academy.it.command.ConfigurationManager;
+import by.academy.it.manager.ConfigurationManager;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
-import by.academy.it.services.impl.FlightServiceImpl;
-import by.academy.it.services.impl.TicketServiceImpl;
+import by.academy.it.services.FlightService;
+import by.academy.it.services.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Component
 public class AdminPageCommand implements ActionCommand {
 
+    @Autowired
+    private FlightService flightService;
+    @Autowired
+    private TicketService ticketService;
+
     public String execute(HttpServletRequest request) {
-        TicketServiceImpl ticketService = TicketServiceImpl.getInstance();
-        FlightServiceImpl flightService = FlightServiceImpl.getInstance();
         String page;
         int currentPage;
         int recordsPerPage;

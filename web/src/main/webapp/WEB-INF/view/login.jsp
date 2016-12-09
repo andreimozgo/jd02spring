@@ -15,7 +15,7 @@
 		<br/><br/>
 				<input type="submit" value="Войти" />
 		<br/>
-			<a href="controller?command=registration">Регистрация</a>
+			<a href="/registration">Регистрация</a>
 			<br/>
 		${errorLoginPassMessage}
 		<br/> 

@@ -5,11 +5,13 @@ import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class TicketDaoImplTest extends Assert {
-    TicketDaoImpl ticketDao = TicketDaoImpl.getInstance();
+    @Autowired
+    TicketDaoImpl ticketDao;
     Flight flight = new Flight(1, "2016-01-01", 20, 10, (byte) 1);
 
     @Test

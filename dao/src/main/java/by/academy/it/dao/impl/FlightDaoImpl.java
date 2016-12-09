@@ -4,34 +4,29 @@ import by.academy.it.dao.FlightDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import org.apache.log4j.Logger;
-import org.hibernate.CacheMode;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     final Logger LOG = Logger.getLogger(FlightDaoImpl.class);
-    private static FlightDaoImpl instance = null;
     private final String GET_ALL_FLIGHTS = "FROM Flight";
     private final String GET_ALL_FLIGHTS_BY_DATE = "FROM Flight F WHERE F.date=:flightDate";
 
-    private FlightDaoImpl() {
-    }
-
-    public static synchronized FlightDaoImpl getInstance() {
-        if (instance == null) instance = new FlightDaoImpl();
-        return instance;
+    @Autowired
+    private FlightDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     public List getAll() throws DaoException {
         List<Flight> flights;
         try {
-            session = util.getSession();
-            Query query = session.createQuery(GET_ALL_FLIGHTS);
+            Query query = getSession().createQuery(GET_ALL_FLIGHTS);
             flights = query.list();
         } catch (HibernateException e) {
             throw new DaoException(e);
@@ -42,8 +37,7 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     public List getAll(int recordsPerPage, int currentPage) throws DaoException {
         List<Flight> flights;
         try {
-            session = util.getSession();
-            Query query = session.createQuery(GET_ALL_FLIGHTS);
+            Query query = getSession().createQuery(GET_ALL_FLIGHTS);
             query.setFirstResult((currentPage - 1) * recordsPerPage);
             query.setMaxResults(recordsPerPage);
             query.setCacheable(true);
@@ -58,9 +52,8 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     public List getAll(int recordsPerPage, int currentPage, String flightDate) throws DaoException {
         List<Flight> flights;
         try {
-            session = util.getSession();
             LOG.info("FlightDate= " + flightDate);
-            Query query = session.createQuery(GET_ALL_FLIGHTS_BY_DATE);
+            Query query = getSession().createQuery(GET_ALL_FLIGHTS_BY_DATE);
             query.setParameter("flightDate", flightDate);
             query.setFirstResult((currentPage - 1) * recordsPerPage);
             query.setMaxResults(recordsPerPage);
@@ -76,8 +69,7 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     public Long getAmount() throws DaoException {
         Long amount;
         try {
-            session = util.getSession();
-            Criteria criteria = session.createCriteria(Flight.class);
+            Criteria criteria = getSession().createCriteria(Flight.class);
             criteria.setProjection(Projections.rowCount());
             amount = (Long) criteria.uniqueResult();
             LOG.info("Amount of flights: " + amount);
@@ -91,8 +83,7 @@ public class FlightDaoImpl extends BaseDao<Flight> implements FlightDao {
     public Long getAmount(String flightDate) throws DaoException {
         Long amount;
         try {
-            session = util.getSession();
-            Criteria criteria = session.createCriteria(Flight.class);
+            Criteria criteria = getSession().createCriteria(Flight.class);
             criteria.add(Restrictions.eq("date", flightDate));
             criteria.setProjection(Projections.rowCount());
             amount = (Long) criteria.uniqueResult();

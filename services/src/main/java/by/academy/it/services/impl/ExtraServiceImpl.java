@@ -1,22 +1,25 @@
 package by.academy.it.services.impl;
 
+import by.academy.it.dao.ExtraDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Extra;
 import by.academy.it.services.AbstractService;
 import by.academy.it.services.ExtraService;
 import org.apache.log4j.Logger;
-import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraService {
-    private static ExtraServiceImpl instance = null;
     final Logger LOG = Logger.getLogger(ExtraServiceImpl.class);
+    private ExtraDao extraDao;
 
-    public ExtraServiceImpl() {
-    }
-
-    public static synchronized ExtraServiceImpl getInstance() {
-        if (instance == null) instance = new ExtraServiceImpl();
-        return instance;
+    @Autowired
+    public ExtraServiceImpl(ExtraDao extraDao) {
+        this.extraDao = extraDao;
     }
 
     public void createOrUpdate(Extra extra) {
@@ -25,13 +28,9 @@ public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraSer
 
     public Extra findEntityById(Integer id) {
         Extra extra = null;
-        Transaction transaction=null;
         try {
-            transaction = util.getTransaction();
-            extra = optionDao.findEntityById(id);
-            transaction.commit();
+            extra = extraDao.findEntityById(id);
         } catch (DaoException e) {
-            transaction.rollback();
             LOG.error("Error find Extra: ", e);
         }
         return extra;

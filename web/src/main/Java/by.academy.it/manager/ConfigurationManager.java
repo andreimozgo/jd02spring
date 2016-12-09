@@ -1,4 +1,4 @@
-package by.academy.it.command;
+package by.academy.it.manager;
 
 import java.util.ResourceBundle;
 

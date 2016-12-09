@@ -1,7 +1,7 @@
 package by.academy.it.command.user;
 
 import by.academy.it.command.ActionCommand;
-import by.academy.it.command.ConfigurationManager;
+import by.academy.it.manager.ConfigurationManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

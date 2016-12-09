@@ -9,10 +9,33 @@
 	</welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/jsp/error/error.jsp</location>
+		<location>/WEB-INF/view/error/error.jsp</location>
 	</error-page>
 	<error-page>
 		<exception-type>java.lang.RuntimeException</exception-type>
-		<location>/jsp/error/error.jsp</location>
+		<location>/WEB-INF/view/error.jsp</location>
 	</error-page>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/dispatcher-servlet.xml
+		</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>net.sf.ehcache.constructs.web.ShutdownListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 </web-app>

@@ -5,25 +5,24 @@ import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDaoImpl extends BaseDao<User> implements UserDao {
     final Logger LOG = Logger.getLogger(UserDaoImpl.class);
-    private static UserDaoImpl instance = null;
 
-    private UserDaoImpl() {
-    }
-
-    public static synchronized UserDaoImpl getInstance() {
-        if (instance == null) instance = new UserDaoImpl();
-        return instance;
+    @Autowired
+    private UserDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     public String getPassword(String login) throws DaoException {
         String hql = "SELECT U.password FROM User U WHERE U.login=:login";
         String pass;
         try {
-            session = util.getSession();
-            query = session.createQuery(hql);
+            query = getSession().createQuery(hql);
             query.setParameter("login", login);
             pass = (String) query.uniqueResult();
         } catch (HibernateException e) {
@@ -36,8 +35,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
         String hql = "SELECT U FROM User U WHERE U.login=:login";
         User user;
         try {
-            session = util.getSession();
-            query = session.createQuery(hql);
+            query = getSession().createQuery(hql);
             LOG.info("Requested login: " + login);
             query.setParameter("login", login);
             user = (User) query.uniqueResult();

@@ -1,5 +1,6 @@
 package by.academy.it.command;
 
+import by.academy.it.manager.ConfigurationManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
