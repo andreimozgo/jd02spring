@@ -1,5 +1,6 @@
 package by.academy.it.dao.impl;
 
+import by.academy.it.dao.TicketDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
@@ -10,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class TicketDaoImplTest extends Assert {
+
     @Autowired
-    TicketDaoImpl ticketDao;
+    TicketDao ticketDao;
     Flight flight = new Flight(1, "2016-01-01", 20, 10, (byte) 1);
 
     @Test

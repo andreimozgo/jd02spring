@@ -6,8 +6,8 @@
 <body>
 	<h3>Добро пожаловать в систему бронирования билетов LOWCOST</h3>
 		<h4>Войдите в систему</h4>
-	<form name="loginForm" method="POST" action="controller">
-		<input type="hidden" name="command" value="login" /> Логин:
+	<form name="loginForm" method="POST" action="lowcost">
+		 Логин:
 		<br/>
 		<input type="text" name="login" value="" />
 		<br/>Пароль:<br/>

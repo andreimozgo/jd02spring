@@ -132,6 +132,6 @@ ${user}, hello!
     </c:otherwise>
 </c:choose>
 <br>
-<a href="controller?command=logout">Logout</a>
+<a href="/logout">Logout</a>
 </body>
 </html>

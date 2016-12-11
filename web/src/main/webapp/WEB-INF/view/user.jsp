@@ -186,7 +186,7 @@ ${user}, hello!
     </tbody>
 </table>
 <br>
-<a href="controller?command=logout">Logout</a>
+<a href="/logout">Logout</a>
 
 </body>
 </html>

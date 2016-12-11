@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h4>Введите желаемый логин и пароль</h4>
-		<form method="POST" action="controller">
+		<form method="POST" action="addRegistration">
 	<div>
 		<label for="login">Логин:</label><br> <input type="text"
 			name="login" value="" required />
@@ -19,8 +19,7 @@
 			name="password" value="" required />
 	</div>
 	<div>
-		<input type="hidden" name="command" value="addregistration" /> <input
-			type="submit" value="Зарегистрировать" />
+		 <input type="submit" value="Зарегистрировать" />
 	</div>
 	</form>
 </body>

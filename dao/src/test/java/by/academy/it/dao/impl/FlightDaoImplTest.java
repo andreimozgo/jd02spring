@@ -1,5 +1,6 @@
 package by.academy.it.dao.impl;
 
+import by.academy.it.dao.FlightDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import org.junit.Assert;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class FlightDaoImplTest extends Assert {
     @Autowired
-    FlightDaoImpl flightDao;
+    FlightDao flightDao;
 
     @Test
     public void testCreate() throws DaoException {
