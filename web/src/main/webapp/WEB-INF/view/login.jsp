@@ -6,7 +6,7 @@
 <body>
 	<h3>Добро пожаловать в систему бронирования билетов LOWCOST</h3>
 		<h4>Войдите в систему</h4>
-	<form name="loginForm" method="POST" action="lowcost">
+	<form name="loginForm" method="POST" action="index">
 		 Логин:
 		<br/>
 		<input type="text" name="login" value="" />

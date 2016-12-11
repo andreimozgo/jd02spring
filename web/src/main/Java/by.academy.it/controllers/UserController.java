@@ -47,8 +47,8 @@ public class UserController {
         return page;
     }
 
-    @RequestMapping(value = "/lowcost", method = RequestMethod.POST)
-    public String userCheck(ModelMap model, HttpSession session, HttpServletRequest request,
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
+    public String userCheck(HttpSession session, HttpServletRequest request,
                             @RequestParam(value = "login") String login,
                             @RequestParam(value = "password") String password) {
         String page;

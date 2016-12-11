@@ -15,7 +15,7 @@ ${user}, hello!
 </head>
 <table>
 
-    <form method="post" action="controller">
+    <form method="post" action="lowcost">
         <tr>
             <td>Количество строк на страницу:</td>
             <td>
@@ -29,12 +29,12 @@ ${user}, hello!
                 </div>
             </td>
             <td>
-                <input type="hidden" name="command" value="clientpage"/>
+                <input type="hidden" name="recordsPerPage" value="${recordsPerPage}"/>
                 <input type="submit" value="Поиск"/>
             </td>
         </tr>
     </form>
-    <form method="post" action="controller">
+    <form method="post" action="lowcost">
         <tr>
             <td>
                 <div>
@@ -43,7 +43,7 @@ ${user}, hello!
                 </div>
             </td>
             <td>
-                <input type="hidden" name="command" value="clientpage"/>
+                <input type="hidden" name="flightDate" value="${flightDate}"/>
                 <input type="submit" value="Поиск"/>
             </td>
         </tr>
@@ -80,9 +80,9 @@ ${user}, hello!
 </table>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="controller?command=clientpage&currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}">Предыдущая</a>
+        <td><a href="/lowcost?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}">Предыдущая</a>
         </td>
-        <td><a href="controller?command=clientpage&currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
+        <td><a href="/lowcost?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
         <td>Предыдущая</td>
@@ -98,7 +98,7 @@ ${user}, hello!
 <td>${i}</td>
 </c:when>
 <c:otherwise>
-    <option value="controller?command=clientpage&currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
+    <option value="/lowcost?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -108,9 +108,9 @@ ${user}, hello!
 <c:choose>
     <c:when test="${currentPage lt numberOfPages}">
         <td>
-            <a href="controller?command=clientpage&currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
+            <a href="/lowcost?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
         </td>
-        <td><a href="controller?command=clientpage&currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}">Следующая</a>
+        <td><a href="/lowcost?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}">Следующая</a>
         </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">

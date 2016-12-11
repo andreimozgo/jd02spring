@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +24,7 @@ public class ClientController {
 
     final Logger LOG = Logger.getLogger(ClientController.class);
 
-    @RequestMapping(value = "/client", method = RequestMethod.GET)
+    @RequestMapping(value = "/lowcost")
     public String getClientPage(HttpServletRequest request) {
         String page;
         int currentPage;
@@ -37,11 +36,11 @@ public class ClientController {
         int userId = (Integer) session.getAttribute("userid");
         List<Ticket> tickets = ticketService.getAllByUser(userId);
         request.setAttribute("tickets", tickets);
-
+        LOG.info("recordsPerPage= " + request.getParameter("recordsPerPage"));
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
-            recordsPerPage = 3;
+            recordsPerPage = 2;
         }
 
         if (request.getParameter("currentPage") != null) {
