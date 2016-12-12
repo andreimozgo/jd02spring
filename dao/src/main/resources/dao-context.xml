@@ -11,7 +11,18 @@
                            http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="by.academy.it"/>
+
     <aop:aspectj-autoproxy/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/lowcost_hib?useSSL=false"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
+        <property name="initialSize" value="3"/>
+        <property name="maxActive" value="10"/>
+    </bean>
+
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -19,6 +30,7 @@
         <property name="packagesToScan">
             <value>by.academy.it.entity</value>
         </property>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -36,13 +48,6 @@
         </property>
 
     </bean>
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/lowcost_hib?useSSL=false"/>
-        <property name="username" value="root"/>
-        <property name="password" value="1234"/>
-        <property name="initialSize" value="3"/>
-        <property name="maxActive" value="10"/>
-    </bean>
+
 
 </beans>

@@ -1,17 +1,24 @@
 package by.academy.it.dao.impl;
 
-import by.academy.it.dao.FlightDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.List;
 
+@ContextConfiguration("/test-context.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class})
 public class FlightDaoImplTest extends Assert {
     @Autowired
-    FlightDao flightDao;
+    FlightDaoImpl flightDao;
 
     @Test
     public void testCreate() throws DaoException {

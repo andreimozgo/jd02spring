@@ -1,23 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <html>
 <head>
     <title>Welcome</title>
 </head>
 <body>
-<h3>Система бронирования билетов LOWCOST</h3>
+<h3><s:message code="page.system"/></h3>
 <hr/>
-${user}, hello!
+${user}, <s:message code="page.hello"/>!
 <hr/>
 
-<h3>Расписание рейсов</h3>
+<h3><s:message code="flight.table"/></h3>
 </head>
 <table>
 
     <form method="post" action="lowcost">
         <tr>
-            <td>Количество строк на страницу:</td>
+            <td><s:message code="pagination.linesperpage"/>:</td>
             <td>
                 <div>
                     <select name="recordsPerPage">
@@ -30,7 +31,7 @@ ${user}, hello!
             </td>
             <td>
                 <input type="hidden" name="recordsPerPage" value="${recordsPerPage}"/>
-                <input type="submit" value="Поиск"/>
+                <input type="submit" value="<s:message code="pagination.search"/>"/>
             </td>
         </tr>
     </form>
@@ -38,13 +39,13 @@ ${user}, hello!
         <tr>
             <td>
                 <div>
-                    <label for="flightDate">Дата:</label><br>
+                    <label for="flightDate"><s:message code="flight.date"/>:</label><br>
                     <input type="date" name="flightDate"/>
                 </div>
             </td>
             <td>
                 <input type="hidden" name="flightDate" value="${flightDate}"/>
-                <input type="submit" value="Поиск"/>
+                <input type="submit" value="<s:message code="pagination.search"/>"/>
             </td>
         </tr>
     </form>
@@ -53,11 +54,11 @@ ${user}, hello!
 <table border="1">
     <thead align="center">
     <tr>
-        <th>Номер рейса</th>
-        <th>Дата</th>
-        <th>Количество мест</th>
-        <th>Цена</th>
-        <th>Действие</th>
+        <th><s:message code="flight.id"/></th>
+        <th><s:message code="flight.date"/></th>
+        <th><s:message code="flight.seats"/></th>
+        <th><s:message code="flight.price"/></th>
+        <th><s:message code="action.action"/></th>
     </tr>
     </thead>
     <tbody align="center">
@@ -68,10 +69,9 @@ ${user}, hello!
             <td><c:out value="${flight.seats}"/></td>
             <td><c:out value="${flight.cost}"/></td>
             <td>
-                <form method="post" action="controller">
-                    <input type="hidden" name="command" value="buyticket"/> <input
-                        type="hidden" name="flight_id" value="${flight.id}"> <input
-                        type="submit" value="Купить"/>
+                <form method="post" action="buyticket">
+                    <input type="hidden" name="flight_id" value="${flight.id}">
+                    <input type="submit" value="<s:message code="ticket.buy"/>"/>
                 </form>
             </td>
         </tr>
@@ -80,12 +80,12 @@ ${user}, hello!
 </table>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="/lowcost?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}">Предыдущая</a>
+        <td><a href="/lowcost?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.previous"/></a>
         </td>
         <td><a href="/lowcost?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
-        <td>Предыдущая</td>
+        <td><s:message code="pagination.previous"/></td>
         <td>1</td>
     </c:when>
 </c:choose>
@@ -110,75 +110,77 @@ ${user}, hello!
         <td>
             <a href="/lowcost?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
         </td>
-        <td><a href="/lowcost?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}">Следующая</a>
+        <td><a href="/lowcost?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.next"/></a>
         </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">
         <td>${numberOfPages}</td>
-        <td>Следующая</td>
+        <td><s:message code="pagination.next"/></td>
     </c:when>
 </c:choose>
 <table border="1">
     <thead align="center">
     <tr>
-        <th>Номер билета</th>
-        <th>Номер рейса</th>
-        <th>Багаж (+35)</th>
-        <th>Приоритет регистрации (+10)</th>
-        <th>Приоритет посадки (+12)</th>
-        <th>Цена</th>
-        <th>Статус</th>
-        <th>Действие</th>
+        <th><s:message code="ticket.id"/></th>
+        <th><s:message code="flight.id"/></th>
+        <th><s:message code="ticket.baggage"/> (+35)</th>
+        <th><s:message code="ticket.registration"/> (+10)</th>
+        <th><s:message code="ticket.boarding"/> (+12)</th>
+        <th><s:message code="ticket.price"/></th>
+        <th><s:message code="ticket.state"/></th>
+        <th><s:message code="action.action"/></th>
     </tr>
     </thead>
     <tbody align="center">
     <c:forEach items="${tickets}" var="ticket">
         <tr>
-            <form method="post" action="controller">
+            <form method="post" action="recalculate">
                 <td><c:out value="${ticket.id}"/></td>
                 <td><c:out value="${ticket.flight.id}"/></td>
                 <td>
                     <div>
                         <select name="baggage">
-                            <option value="0">Без багажа</option>
-                            <option value="1">С багажом</option>
+                            <option value="0"><s:message code="ticket.no"/></option>
+                            <option value="1"><s:message code="ticket.yes"/></option>
                         </select>
                     </div>
                 </td>
                 <td>
                     <div>
                         <select name="priorityregistration">
-                            <option value="0">Нет</option>
-                            <option value="1">Да</option>
+                            <option value="0"><s:message code="ticket.no"/></option>
+                            <option value="1"><s:message code="ticket.yes"/></option>
                         </select>
                     </div>
                 </td>
                 <td>
                     <div>
                         <select name="priorityboarding">
-                            <option value="0">Нет</option>
-                            <option value="1">Да</option>
+                            <option value="0"><s:message code="ticket.no"/></option>
+                            <option value="1"><s:message code="ticket.yes"/></option>
                         </select>
                     </div>
                 </td>
                 <td><c:out value="${ticket.cost}"/></td>
                 <c:choose>
                     <c:when test="${ticket.paid == 0}">
-                        <td><font color="red">Не оплачен</font></td>
+                        <td><font color="red"><s:message code="ticket.unpayed"/></font></td>
                     </c:when>
                     <c:when test="${ticket.paid == 1}">
-                        <td><font color="green">Оплачен</font></td>
+                        <td><font color="green"><s:message code="ticket.payed"/></font></td>
                     </c:when>
                 </c:choose>
-                <td><input type="hidden" name="command" value="recalculate"/>
+                <td>
                     <input type="hidden" name="ticket_id" value="${ticket.id}">
-                    <input type="hidden" name="baggage" value="1"><input
-                            type="submit" value="Пересчитать"/>
+                    <input type="hidden" name="baggage" value=value="${baggage}">
+                    <input type="hidden" name="priorityregistration" value=value="${priorityregistration}">
+                    <input type="hidden" name="priorityboarding" value=value="${priorityboarding}">
+                    <input type="submit" value="<s:message code="ticket.recalculate"/>"/>
             </form>
-            <form method="post" action="controller">
-                <input type="hidden" name="command" value="payticket"/> <input
-                    type="hidden" name="ticket_id" value="${ticket.id}"> <input
-                    type="submit" value="Оплатить"/>
+
+            <form method="post" action="payticket">
+                <input type="hidden" name="ticket_id" value="${ticket.id}">
+                <input type="submit" value="<s:message code="ticket.pay"/>"/>
             </form>
             </td>
         </tr>
@@ -186,7 +188,7 @@ ${user}, hello!
     </tbody>
 </table>
 <br>
-<a href="/logout">Logout</a>
+<a href="/logout"><s:message code="page.logout"/></a>
 
 </body>
 </html>

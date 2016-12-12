@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "lowcost")
 public class Extra extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

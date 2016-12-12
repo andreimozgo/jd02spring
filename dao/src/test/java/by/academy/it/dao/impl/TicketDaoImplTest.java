@@ -1,19 +1,27 @@
 package by.academy.it.dao.impl;
 
-import by.academy.it.dao.TicketDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.List;
 
+@ContextConfiguration("/test-context.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class})
 public class TicketDaoImplTest extends Assert {
 
     @Autowired
-    TicketDao ticketDao;
+    TicketDaoImpl ticketDao;
+
     Flight flight = new Flight(1, "2016-01-01", 20, 10, (byte) 1);
 
     @Test

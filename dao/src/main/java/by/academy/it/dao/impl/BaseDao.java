@@ -11,6 +11,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.ParameterizedType;
+
 @Repository
 public class BaseDao<T extends AbstractEntity> implements Dao<T> {
     private static Logger log = Logger.getLogger(BaseDao.class);
@@ -26,8 +28,6 @@ public class BaseDao<T extends AbstractEntity> implements Dao<T> {
         return sessionFactory.getCurrentSession();
     }
 
-    private Class pClass;
-
     public void create(T t) throws DaoException {
         try {
             getSession().saveOrUpdate(t);
@@ -41,7 +41,7 @@ public class BaseDao<T extends AbstractEntity> implements Dao<T> {
         T t;
         try {
             log.info("Get Entity by id:" + id);
-            t = (T) getSession().get(pClass, id);
+            t = (T) getSession().get(getPersistentClass(), id);
             log.info("Got entity: " + t);
         } catch (HibernateException e) {
             throw new DaoException(e);
@@ -51,11 +51,15 @@ public class BaseDao<T extends AbstractEntity> implements Dao<T> {
 
     public void delete(Integer id) throws DaoException {
         try {
-            T t = (T) getSession().get(pClass, id);
+            T t = (T) getSession().get(getPersistentClass(), id);
             getSession().delete(t);
             log.info("Deleted: " + t);
         } catch (HibernateException e) {
             throw new DaoException(e);
         }
+    }
+
+    private Class getPersistentClass() {
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 }

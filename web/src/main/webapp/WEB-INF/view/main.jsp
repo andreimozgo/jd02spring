@@ -1,48 +1,50 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>Welcome</title>
 </head>
 <body>
-<h3>Система бронирования билетов LOWCOST</h3>
+<h3><s:message code="page.system"/></h3>
 <hr/>
-${user}, hello!
+${user}, <s:message code="page.hello"/>!
 <hr/>
-<h3>Расписание рейсов</h3>
+<h3><s:message code="flight.table"/></h3>
 </head>
 <table>
-    <form action="controller" method="post">
+    <form action="addflight" method="post">
 
         <div>
-            <label for="flightDate">Дата:</label><br>
+            <label for="flightDate"><s:message code="flight.date"/>:</label><br>
             <input type="date" name="flightDate" value="" required/>
         </div>
 
         <div>
-            <label for="seats">Число мест:</label><br> <input
+            <label for="seats"><s:message code="flight.seats"/>:</label><br> <input
                 type="text" name="seats" value="" required/>
         </div>
         <div>
-            <label for="cost">Цена:</label><br> <input
+            <label for="cost"><s:message code="flight.price"/>:</label><br> <input
                 type="text" name="cost" value="" required/>
         </div>
         <div>
-            <label for="upCost">Признак повышения цены</label> </br><select name="upCost">
-            <option value="0">0 - не повышается</option>
-            <option value="1">1 - повышается</option>
+            <label for="upCost"><s:message code="flight.priceup"/></label> </br><select name="upCost">
+            <option value="0">0 - <s:message code="flight.priceup.cant"/></option>
+            <option value="1">1 - <s:message code="flight.priceup.can"/></option>
         </select>
         </div>
         <div>
-            <input type="hidden" name="command" value="addflight"/>
-            <input type="submit" value="Добавить"/>
+            <input type="submit" value="<s:message code="flight.add"/>"/>
         </div>
     </form>
 </table>
 <br>
-<form method="post" action="controller">
-    <td>Количество строк на страницу:</td>
+<form method="get" action="admin">
+    <td><s:message code="pagination.linesperpage"/>:</td>
     <td>
         <div>
             <select name="recordsPerPage">
@@ -53,18 +55,17 @@ ${user}, hello!
             </select>
         </div>
     </td>
-    <input type="hidden" name="command" value="adminpage"/>
-    <input type="submit" value="Поиск"/>
+    <input type="submit" value="<s:message code="pagination.search"/>"/>
 </form>
 <table border="1">
- <thead align = "center">
- <tr>
-     <th>Номер рейса</th>
-     <th>Дата</th>
-     <th>Количество мест</th>
-     <th colspan="2">Action</th>
- </tr>
- </thead>
+    <thead align="center">
+    <tr>
+        <th><s:message code="flight.id"/></th>
+        <th><s:message code="flight.date"/></th>
+        <th><s:message code="flight.seats"/></th>
+        <th colspan="2"><s:message code="action.action"/></th>
+    </tr>
+    </thead>
     <tbody align="center">
     <c:forEach items="${flights}" var="flight">
         <tr>
@@ -72,28 +73,26 @@ ${user}, hello!
             <td><c:out value="${flight.date}"/></td>
             <td><c:out value="${flight.seats}"/></td>
             <td>
-                <form method="post" action="controller">
-                    <input type="hidden" name="command" value="deleteflight"/> <input
-                        type="hidden" name="flight_id" value="${flight.id}">
-                    <input type="submit" value="Удалить"/>
+                <form method="post" action="deleteflight">
+                    <input type="hidden" name="flight_id" value="${flight.id}">
+                    <input type="hidden" name="currentPage" value="${currentPage}">
+                    <input type="hidden" name="recordsPerPage" value="${recordsPerPage}">
+                    <input type="submit" value="<s:message code="flight.delete"/>"/>
                 </form>
             </td>
         </tr>
     </c:forEach>
-    <td>
-        Role:
-        ${role}</td>
     </tbody>
 </table>
 <br>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="controller?command=adminpage&currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}">Предыдущая</a>
+        <td><a href="admin?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.previous"/></a>
         </td>
-        <td><a href="controller?command=adminpage&currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
+        <td><a href="admin?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
-        <td>Предыдущая</td>
+        <td><s:message code="pagination.previous"/></td>
         <td>1</td>
     </c:when>
     <c:otherwise>
@@ -109,7 +108,7 @@ ${user}, hello!
 <td>${i}</td>
 </c:when>
 <c:otherwise>
-    <option value="controller?command=adminpage&currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
+    <option value="admin?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -118,20 +117,20 @@ ${user}, hello!
 <c:choose>
     <c:when test="${currentPage lt numberOfPages}">
         <td>
-            <a href="controller?command=adminpage&currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
+            <a href="admin?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
         </td>
-        <td><a href="controller?command=adminpage&currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}">Следующая</a>
+        <td><a href="admin?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.next"/></a>
         </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">
         <td>${numberOfPages}</td>
-        <td>Следующая</td>
+        <td><s:message code="pagination.next"/></td>
     </c:when>
     <c:otherwise>
         <td></td>
     </c:otherwise>
 </c:choose>
 <br>
-<a href="/logout">Logout</a>
+<a href="/logout"><s:message code="page.logout"/></a>
 </body>
 </html>

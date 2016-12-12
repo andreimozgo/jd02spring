@@ -53,7 +53,33 @@ public class AdminController {
 
         page = ConfigurationManager.getProperty("path.page.main");
         return page;
-
     }
 
+    @RequestMapping(value = "/addflight", method = RequestMethod.POST)
+    public String addFlight(HttpServletRequest request) {
+        String page;
+
+        String date = request.getParameter("flightDate");
+        int seats = Integer.parseInt(request.getParameter("seats"));
+        int cost = Integer.parseInt(request.getParameter("cost"));
+        byte upCost = Byte.parseByte(request.getParameter("upCost"));
+        Flight flight = new Flight(null, date, seats, cost, upCost);
+        flightService.createOrUpdate(flight);
+        LOG.info("Flight added successfully");
+
+        page = getAdminPage(request);
+        return page;
+    }
+
+    @RequestMapping(value = "/deleteflight", method = RequestMethod.POST)
+    public String deleteFlight(HttpServletRequest request) {
+        String page;
+
+        int id = Integer.parseInt(request.getParameter("flight_id"));
+        flightService.delete(id);
+        LOG.info("Flight deleted successfully");
+
+        page = getAdminPage(request);
+        return page;
+    }
 }

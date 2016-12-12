@@ -1,14 +1,17 @@
 package by.academy.it.controllers;
 
+import by.academy.it.entity.Extra;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
 import by.academy.it.manager.ConfigurationManager;
+import by.academy.it.services.ExtraService;
 import by.academy.it.services.FlightService;
 import by.academy.it.services.TicketService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +24,8 @@ public class ClientController {
     private FlightService flightService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private ExtraService extraService;
 
     final Logger LOG = Logger.getLogger(ClientController.class);
 
@@ -40,7 +45,7 @@ public class ClientController {
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
-            recordsPerPage = 2;
+            recordsPerPage = 3;
         }
 
         if (request.getParameter("currentPage") != null) {
@@ -65,6 +70,84 @@ public class ClientController {
         request.setAttribute("recordsPerPage", recordsPerPage);
 
         page = ConfigurationManager.getProperty("path.page.user");
+        return page;
+    }
+
+    @RequestMapping(value = "/recalculate",  method = RequestMethod.POST)
+    public String recalculateTicket(HttpServletRequest request) {
+        String page;
+
+        int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
+        Ticket ticket = ticketService.findEntityById(ticketId);
+        int cost = ticket.getCost();
+        LOG.info("Integer.parseInt(request.getParameter(\"baggage\")= " + Integer.parseInt(request.getParameter("baggage")));
+
+        if (Integer.parseInt(request.getParameter("baggage")) == 1) {
+            Extra extra = extraService.findEntityById(1);
+          //  ticket.getExtras().add(extra);
+            cost += extra.getCost();
+
+        } else if (Integer.parseInt(request.getParameter("baggage")) == 0) {
+            Extra extra = extraService.findEntityById(1);
+           // ticket.getExtras().remove(extra);
+           // cost -= extra.getCost();
+        }
+        if (Integer.parseInt(request.getParameter("priorityregistration")) == 1) {
+            Extra extra = extraService.findEntityById(2);
+          //  ticket.getExtras().add(extra);
+            cost += extra.getCost();
+        }
+        if (Integer.parseInt(request.getParameter("priorityregistration")) == 0) {
+            Extra extra = extraService.findEntityById(2);
+          //  ticket.getExtras().remove(extra);
+           // cost -= extra.getCost();
+        }
+
+        if (Integer.parseInt(request.getParameter("priorityboarding")) == 1) {
+            Extra extra = extraService.findEntityById(3);
+           // ticket.getExtras().add(extra);
+            cost += extra.getCost();
+        }
+        if (Integer.parseInt(request.getParameter("priorityboarding")) == 0) {
+            Extra extra = extraService.findEntityById(3);
+           // ticket.getExtras().remove(extra);
+            //cost -= extra.getCost();
+        }
+        ticket.setCost(cost);
+        ticketService.createOrUpdate(ticket);
+        LOG.info("Ticket recalculated successfully");
+
+        page = getClientPage(request);
+        return page;
+    }
+
+
+    @RequestMapping(value = "/payticket",  method = RequestMethod.POST)
+    public String payTicket(HttpServletRequest request) {
+        String page;
+
+        int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
+        ticketService.payTicket(ticketId);
+        LOG.info("Ticket payed successfully");
+
+        page = getClientPage(request);
+        return page;
+    }
+
+    @RequestMapping(value = "/buyticket",  method = RequestMethod.POST)
+    public String buyTicket(HttpServletRequest request) {
+        String page;
+
+        HttpSession session = request.getSession(true);
+        int flightId = Integer.parseInt(request.getParameter("flight_id"));
+        int userId = (Integer) session.getAttribute("userid");
+        Flight flight = flightService.findEntityById(flightId);
+        int cost = flight.getCost();
+        Ticket ticket = new Ticket(0, flight, userId, cost, 0);
+        ticketService.createOrUpdate(ticket);
+        LOG.info("User bought ticket successfully");
+
+        page = getClientPage(request);
         return page;
     }
 }
