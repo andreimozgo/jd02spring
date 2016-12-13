@@ -13,9 +13,10 @@
                             http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <context:component-scan base-package="by.academy.it"/>
-
+    <context:annotation-config/>
+    <context:component-scan base-package="by.academy.it.dao"/>
     <aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="false"/>
+
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
@@ -36,29 +37,17 @@
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="debug">true</prop>
                 <prop key="connection.isolation">2</prop>
-                <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="flightDao" class="by.academy.it.dao.impl.FlightDaoImpl">
-        <constructor-arg ref="sessionFactory"/>
-    </bean>
-
-    <bean id="ticketDao" class="by.academy.it.dao.impl.TicketDaoImpl">
-        <constructor-arg ref="sessionFactory"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <bean id="txTemplate" class="org.springframework.transaction.support.TransactionTemplate">
-        <property name="transactionManager" ref="transactionManager"/>
-    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
 </beans>

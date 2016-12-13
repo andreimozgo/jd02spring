@@ -1,5 +1,6 @@
 package by.academy.it.dao.impl;
 
+import by.academy.it.dao.TicketDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
 import by.academy.it.entity.Ticket;
@@ -7,22 +8,22 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @ContextConfiguration("/test-context.xml")
+@Rollback
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class})
-@Transactional
+@Transactional(transactionManager = "txManager", propagation = Propagation.SUPPORTS)
 public class TicketDaoImplTest extends Assert {
 
     @Autowired
-    TicketDaoImpl ticketDao;
+    TicketDao ticketDao;
 
     Flight flight = new Flight(1, "2016-01-01", 20, 10, (byte) 1);
 
