@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -24,7 +26,13 @@ public class AdminController {
 
     final Logger LOG = Logger.getLogger(AdminController.class);
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        String page = ConfigurationManager.getProperty("path.page.main.reject");
+        return page;
+    }
+
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String getAdminPage(HttpServletRequest request) {
         String page;
         int currentPage;
@@ -71,12 +79,11 @@ public class AdminController {
         return page;
     }
 
-    @RequestMapping(value = "/deleteflight", method = RequestMethod.POST)
-    public String deleteFlight(HttpServletRequest request) {
+    @RequestMapping(value = "/main", method = RequestMethod.GET,  params = "flight_id")
+    public String deleteFlight(HttpServletRequest request, @RequestParam(value = "flight_id") int flightId) {
         String page;
 
-        int id = Integer.parseInt(request.getParameter("flight_id"));
-        flightService.delete(id);
+        flightService.delete(flightId);
         LOG.info("Flight deleted successfully");
 
         page = getAdminPage(request);

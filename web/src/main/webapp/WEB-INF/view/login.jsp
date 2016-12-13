@@ -26,7 +26,7 @@
 <br>
 	<h3><s:message code="page.login.welcome1"/></h3>
 		<h4><s:message code="page.login.welcome2"/></h4>
-	<form name="loginForm" method="POST" action="index">
+	<form name="loginForm" method="POST" action="<c:url value='/j_spring_security_check' />">
 		<td><s:message code="page.login.login"/>:</td>
 		<br/>
 		<input type='text' name='login' value="" />
@@ -38,11 +38,13 @@
 			<a href="/registration"><s:message code="page.login.reg"/></a>
 			<br/>
 		${errorLoginPassMessage}
-		<br/> 
-		${wrongAction} 
+		<br/>
+		${wrongAction}
 		<br/>
 		${nullPage}
 		<br/>
+        <input type="hidden" name="${_csrf.parameterName}"
+               value="${_csrf.token}"/>
 	</form>
 	<hr />
 </body>

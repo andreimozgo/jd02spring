@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@RequestMapping("/client")
 public class ClientController {
 
     @Autowired
@@ -29,7 +30,13 @@ public class ClientController {
 
     final Logger LOG = Logger.getLogger(ClientController.class);
 
-    @RequestMapping(value = "/lowcost")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        String page = ConfigurationManager.getProperty("path.page.user.reject");
+        return page;
+    }
+
+    @RequestMapping(value = "/user")
     public String getClientPage(HttpServletRequest request) {
         String page;
         int currentPage;

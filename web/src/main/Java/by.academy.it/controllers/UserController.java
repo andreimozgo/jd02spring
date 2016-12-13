@@ -7,14 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Locale;
 
 @Controller
 public class UserController {
@@ -51,8 +46,8 @@ public class UserController {
         return page;
     }
 
-    @RequestMapping(value = "/index", method = RequestMethod.POST)
-    public String userCheck(HttpSession session, HttpServletRequest request,  Locale locale,
+  /*  @RequestMapping(value = "/index", method = RequestMethod.POST)
+    public String userCheck(HttpSession session, HttpServletRequest request, Locale locale,
                             @RequestParam(value = "login") String login,
                             @RequestParam(value = "password") String password) {
         String page;
@@ -84,7 +79,7 @@ public class UserController {
             page = ConfigurationManager.getProperty("path.page.login");
         }
         return page;
-    }
+    }*/
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
@@ -94,8 +89,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/addRegistration", method = RequestMethod.POST)
-    public String addRegistration(ModelMap model,
-                                  @RequestParam(value = "login") String login,
+    public String addRegistration(@RequestParam(value = "login") String login,
                                   @RequestParam(value = "password") String password) {
 
         String page;
@@ -104,6 +98,12 @@ public class UserController {
         LOG.info("New registration added successfully");
 
         page = ConfigurationManager.getProperty("path.page.login");
+        return page;
+    }
+
+    @RequestMapping(value = "/access_denied", method = RequestMethod.GET)
+    public String accessDeniedPage() {
+        String page = ConfigurationManager.getProperty("path.page.assessdenied");
         return page;
     }
 }

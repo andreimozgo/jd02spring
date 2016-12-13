@@ -39,11 +39,13 @@ ${user}, <s:message code="page.hello"/>!
         </div>
         <div>
             <input type="submit" value="<s:message code="flight.add"/>"/>
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
         </div>
     </form>
 </table>
 <br>
-<form method="get" action="admin">
+<form method="get" action="">
     <td><s:message code="pagination.linesperpage"/>:</td>
     <td>
         <div>
@@ -73,7 +75,7 @@ ${user}, <s:message code="page.hello"/>!
             <td><c:out value="${flight.date}"/></td>
             <td><c:out value="${flight.seats}"/></td>
             <td>
-                <form method="post" action="deleteflight">
+                <form method="get" action="">
                     <input type="hidden" name="flight_id" value="${flight.id}">
                     <input type="hidden" name="currentPage" value="${currentPage}">
                     <input type="hidden" name="recordsPerPage" value="${recordsPerPage}">
@@ -87,9 +89,9 @@ ${user}, <s:message code="page.hello"/>!
 <br>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="admin?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.previous"/></a>
+        <td><a href="main?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.previous"/></a>
         </td>
-        <td><a href="admin?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
+        <td><a href="main?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
         <td><s:message code="pagination.previous"/></td>
@@ -108,7 +110,7 @@ ${user}, <s:message code="page.hello"/>!
 <td>${i}</td>
 </c:when>
 <c:otherwise>
-    <option value="admin?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
+    <option value="main?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -117,9 +119,9 @@ ${user}, <s:message code="page.hello"/>!
 <c:choose>
     <c:when test="${currentPage lt numberOfPages}">
         <td>
-            <a href="admin?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
+            <a href="main?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
         </td>
-        <td><a href="admin?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.next"/></a>
+        <td><a href="main?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.next"/></a>
         </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">

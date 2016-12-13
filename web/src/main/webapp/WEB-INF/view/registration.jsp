@@ -38,6 +38,8 @@
 	</div>
 	<div>
 		 <input type="submit" value="<s:message code="page.login.register"/>" />
+		<input type="hidden" name="${_csrf.parameterName}"
+			   value="${_csrf.token}"/>
 	</div>
 	</form>
 </body>
