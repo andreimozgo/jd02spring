@@ -5,7 +5,6 @@ import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.AbstractEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.lang.reflect.ParameterizedType;
 @Repository
 public class BaseDao<T extends AbstractEntity> implements Dao<T> {
     private static Logger log = Logger.getLogger(BaseDao.class);
-    protected Query query;
     private SessionFactory sessionFactory;
 
     @Autowired

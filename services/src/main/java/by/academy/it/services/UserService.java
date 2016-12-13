@@ -7,4 +7,6 @@ public interface UserService extends Service<User> {
 
     User getUserByLogin(String login);
 
+    int getUserId(String login);
+
 }

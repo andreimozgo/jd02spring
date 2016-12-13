@@ -11,7 +11,7 @@
 <body>
 <h3><s:message code="page.system"/></h3>
 <hr/>
-${user}, <s:message code="page.hello"/>!
+<s:message code="page.hello"/>!
 <hr/>
 <h3><s:message code="flight.table"/></h3>
 </head>

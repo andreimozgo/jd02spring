@@ -9,4 +9,5 @@ public interface UserDao extends Dao<User> {
 
     User getUserByLogin(String login) throws DaoException;
 
+    int getUserId(String login) throws DaoException;
 }

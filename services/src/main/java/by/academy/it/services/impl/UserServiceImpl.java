@@ -67,6 +67,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return user;
     }
 
+    public int getUserId(String login) {
+        int userId=0;
+        try {
+            userId = userDao.getUserId(login);
+            LOG.info(userId);
+        } catch (DaoException e) {
+            LOG.error("Error get userId: ", e);
+        }
+        return userId;
+    }
+
     public String hash(String input) {
         String md5Hashed = null;
         if (null == input) {

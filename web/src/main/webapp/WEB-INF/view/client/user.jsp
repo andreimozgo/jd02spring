@@ -9,14 +9,14 @@
 <body>
 <h3><s:message code="page.system"/></h3>
 <hr/>
-${user}, <s:message code="page.hello"/>!
+<s:message code="page.hello"/>!
 <hr/>
 
 <h3><s:message code="flight.table"/></h3>
 </head>
 <table>
 
-    <form method="post" action="lowcost">
+    <form method="get" action="">
         <tr>
             <td><s:message code="pagination.linesperpage"/>:</td>
             <td>
@@ -35,7 +35,7 @@ ${user}, <s:message code="page.hello"/>!
             </td>
         </tr>
     </form>
-    <form method="post" action="lowcost">
+    <form method="get" action="">
         <tr>
             <td>
                 <div>
@@ -71,6 +71,7 @@ ${user}, <s:message code="page.hello"/>!
             <td>
                 <form method="post" action="buyticket">
                     <input type="hidden" name="flight_id" value="${flight.id}">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="submit" value="<s:message code="ticket.buy"/>"/>
                 </form>
             </td>
@@ -80,9 +81,10 @@ ${user}, <s:message code="page.hello"/>!
 </table>
 <c:choose>
     <c:when test="${currentPage != 1}">
-        <td><a href="/lowcost?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.previous"/></a>
+        <td><a href="user?currentPage=${currentPage - 1}&recordsPerPage=${recordsPerPage}"><s:message
+                code="pagination.previous"/></a>
         </td>
-        <td><a href="/lowcost?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
+        <td><a href="user?currentPage=1&recordsPerPage=${recordsPerPage}">1</a></td>
     </c:when>
     <c:when test="${currentPage == 1}">
         <td><s:message code="pagination.previous"/></td>
@@ -98,7 +100,7 @@ ${user}, <s:message code="page.hello"/>!
 <td>${i}</td>
 </c:when>
 <c:otherwise>
-    <option value="/lowcost?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
+    <option value="user?currentPage=${i}&recordsPerPage=${recordsPerPage}">${i}</option>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -108,9 +110,10 @@ ${user}, <s:message code="page.hello"/>!
 <c:choose>
     <c:when test="${currentPage lt numberOfPages}">
         <td>
-            <a href="/lowcost?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
+            <a href="user?currentPage=${numberOfPages}&recordsPerPage=${recordsPerPage}">${numberOfPages}</a>
         </td>
-        <td><a href="/lowcost?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message code="pagination.next"/></a>
+        <td><a href="user?currentPage=${currentPage + 1}&recordsPerPage=${recordsPerPage}"><s:message
+                code="pagination.next"/></a>
         </td>
     </c:when>
     <c:when test="${currentPage == numberOfPages}">
@@ -175,11 +178,13 @@ ${user}, <s:message code="page.hello"/>!
                     <input type="hidden" name="baggage" value=value="${baggage}">
                     <input type="hidden" name="priorityregistration" value=value="${priorityregistration}">
                     <input type="hidden" name="priorityboarding" value=value="${priorityboarding}">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="submit" value="<s:message code="ticket.recalculate"/>"/>
             </form>
 
             <form method="post" action="payticket">
                 <input type="hidden" name="ticket_id" value="${ticket.id}">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="submit" value="<s:message code="ticket.pay"/>"/>
             </form>
             </td>

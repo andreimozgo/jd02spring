@@ -52,14 +52,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else if (isUser(roles)) {
             url = "/client/";
         } else {
-            url = "/access_denied";
+            url = "/access_denie";
         }
 
         return url;
     }
 
     private boolean isUser(List<String> roles) {
-        if (roles.contains("ROLE_CLIENT")) {
+        if (roles.contains("ROLE_USER")) {
             return true;
         }
         return false;

@@ -11,10 +11,9 @@
         <intercept-url pattern="/" access="permitAll"/>
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/logout" access="permitAll"/>
-        <intercept-url pattern="/reg" access="permitAll"/>
         <intercept-url pattern="/index" access="permitAll"/>
-        <intercept-url pattern="/admin/**" access="hasRole('ROLE_CLIENT')" />
-        <intercept-url pattern="/client/**" access="permitAll" />
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/client/**" access="hasRole('ROLE_USER')" />
 
         <form-login
                 login-page="/login"

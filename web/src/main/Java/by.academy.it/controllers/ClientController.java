@@ -7,14 +7,16 @@ import by.academy.it.manager.ConfigurationManager;
 import by.academy.it.services.ExtraService;
 import by.academy.it.services.FlightService;
 import by.academy.it.services.TicketService;
+import by.academy.it.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -27,25 +29,28 @@ public class ClientController {
     private TicketService ticketService;
     @Autowired
     private ExtraService extraService;
+    @Autowired
+    private UserService userService;
 
     final Logger LOG = Logger.getLogger(ClientController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
+        LOG.info("Entered in index()");
         String page = ConfigurationManager.getProperty("path.page.user.reject");
         return page;
     }
 
     @RequestMapping(value = "/user")
     public String getClientPage(HttpServletRequest request) {
+        LOG.info("Entered in getClientPage()");
         String page;
         int currentPage;
         int recordsPerPage;
         String flightDate;
         List<Flight> flights;
 
-        HttpSession session = request.getSession(true);
-        int userId = (Integer) session.getAttribute("userid");
+        int userId = getUserIdByPrincipal();
         List<Ticket> tickets = ticketService.getAllByUser(userId);
         request.setAttribute("tickets", tickets);
         LOG.info("recordsPerPage= " + request.getParameter("recordsPerPage"));
@@ -77,6 +82,7 @@ public class ClientController {
         request.setAttribute("recordsPerPage", recordsPerPage);
 
         page = ConfigurationManager.getProperty("path.page.user");
+        LOG.info("Got path.page.user");
         return page;
     }
 
@@ -145,9 +151,8 @@ public class ClientController {
     public String buyTicket(HttpServletRequest request) {
         String page;
 
-        HttpSession session = request.getSession(true);
         int flightId = Integer.parseInt(request.getParameter("flight_id"));
-        int userId = (Integer) session.getAttribute("userid");
+        int userId = getUserIdByPrincipal();
         Flight flight = flightService.findEntityById(flightId);
         int cost = flight.getCost();
         Ticket ticket = new Ticket(0, flight, userId, cost, 0);
@@ -156,5 +161,16 @@ public class ClientController {
 
         page = getClientPage(request);
         return page;
+    }
+
+    private int getUserIdByPrincipal() {
+        String login;
+        int userId = 0;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            login = ((UserDetails) principal).getUsername();
+            userId = userService.getUserId(login);
+        }
+        return userId;
     }
 }
