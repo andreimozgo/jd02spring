@@ -51,9 +51,10 @@ public class ClientController {
         List<Flight> flights;
 
         int userId = getUserIdByPrincipal();
+        //gets all user tickets
         List<Ticket> tickets = ticketService.getAllByUser(userId);
         request.setAttribute("tickets", tickets);
-        LOG.info("recordsPerPage= " + request.getParameter("recordsPerPage"));
+        //gets all flights with pagination
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
@@ -75,7 +76,7 @@ public class ClientController {
             flights = flightService.getAll(recordsPerPage, currentPage);
             numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         }
-
+        //sets all data in request
         request.setAttribute("flights", flights);
         request.setAttribute("numberOfPages", numberOfPages);
         request.setAttribute("currentPage", currentPage);
@@ -89,43 +90,26 @@ public class ClientController {
     @RequestMapping(value = "/recalculate",  method = RequestMethod.POST)
     public String recalculateTicket(HttpServletRequest request) {
         String page;
-
+        //adds extra cost to ticket cost
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
         Ticket ticket = ticketService.findEntityById(ticketId);
         int cost = ticket.getCost();
-        LOG.info("Integer.parseInt(request.getParameter(\"baggage\")= " + Integer.parseInt(request.getParameter("baggage")));
 
         if (Integer.parseInt(request.getParameter("baggage")) == 1) {
             Extra extra = extraService.findEntityById(1);
-          //  ticket.getExtras().add(extra);
             cost += extra.getCost();
 
-        } else if (Integer.parseInt(request.getParameter("baggage")) == 0) {
-            Extra extra = extraService.findEntityById(1);
-           // ticket.getExtras().remove(extra);
-           // cost -= extra.getCost();
         }
         if (Integer.parseInt(request.getParameter("priorityregistration")) == 1) {
             Extra extra = extraService.findEntityById(2);
-          //  ticket.getExtras().add(extra);
             cost += extra.getCost();
-        }
-        if (Integer.parseInt(request.getParameter("priorityregistration")) == 0) {
-            Extra extra = extraService.findEntityById(2);
-          //  ticket.getExtras().remove(extra);
-           // cost -= extra.getCost();
         }
 
         if (Integer.parseInt(request.getParameter("priorityboarding")) == 1) {
             Extra extra = extraService.findEntityById(3);
-           // ticket.getExtras().add(extra);
             cost += extra.getCost();
         }
-        if (Integer.parseInt(request.getParameter("priorityboarding")) == 0) {
-            Extra extra = extraService.findEntityById(3);
-           // ticket.getExtras().remove(extra);
-            //cost -= extra.getCost();
-        }
+
         ticket.setCost(cost);
         ticketService.createOrUpdate(ticket);
         LOG.info("Ticket recalculated successfully");
@@ -138,7 +122,7 @@ public class ClientController {
     @RequestMapping(value = "/payticket",  method = RequestMethod.POST)
     public String payTicket(HttpServletRequest request) {
         String page;
-
+        //pays ticket
         int ticketId = Integer.parseInt(request.getParameter("ticket_id"));
         ticketService.payTicket(ticketId);
         LOG.info("Ticket payed successfully");
@@ -150,7 +134,7 @@ public class ClientController {
     @RequestMapping(value = "/buyticket",  method = RequestMethod.POST)
     public String buyTicket(HttpServletRequest request) {
         String page;
-
+        //buys ticket
         int flightId = Integer.parseInt(request.getParameter("flight_id"));
         int userId = getUserIdByPrincipal();
         Flight flight = flightService.findEntityById(flightId);
@@ -166,6 +150,7 @@ public class ClientController {
     private int getUserIdByPrincipal() {
         String login;
         int userId = 0;
+        //gets user Id from spring security
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             login = ((UserDetails) principal).getUsername();

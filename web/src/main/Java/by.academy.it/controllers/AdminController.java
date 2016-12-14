@@ -37,10 +37,10 @@ public class AdminController {
         String page;
         int currentPage;
         int recordsPerPage;
-
+        //gets all tickets
         List<Ticket> tickets = ticketService.getAll();
         request.setAttribute("tickets", tickets);
-
+        //used for pagination
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
@@ -52,6 +52,7 @@ public class AdminController {
         } else {
             currentPage = 1;
         }
+        //gets all flights with pagination
         List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
         int numberOfPages = flightService.getNumberOfPages(recordsPerPage);
         request.setAttribute("flights", flights);
@@ -66,7 +67,7 @@ public class AdminController {
     @RequestMapping(value = "/addflight", method = RequestMethod.POST)
     public String addFlight(HttpServletRequest request) {
         String page;
-
+        //adds flights
         String date = request.getParameter("flightDate");
         int seats = Integer.parseInt(request.getParameter("seats"));
         int cost = Integer.parseInt(request.getParameter("cost"));
@@ -82,7 +83,7 @@ public class AdminController {
     @RequestMapping(value = "/main", method = RequestMethod.GET,  params = "flight_id")
     public String deleteFlight(HttpServletRequest request, @RequestParam(value = "flight_id") int flightId) {
         String page;
-
+        //deletes flight
         flightService.delete(flightId);
         LOG.info("Flight deleted successfully");
 

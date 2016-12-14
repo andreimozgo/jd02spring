@@ -56,8 +56,19 @@ public class FlightDaoImplTest extends Assert {
     }
 
     @Test
+    public void testGetAmountDate() throws DaoException {
+        String date;
+        Flight flight = new Flight(null, "2016-11-22", 30, 10, (byte) 0);
+        flightDao.create(flight);
+        date = "2016-11-22";
+        long amount = flightDao.getAmount(date);
+        assertEquals(1, amount);
+    }
+
+    @Test
     public void testGetAll() throws DaoException {
         List<Flight> flights = flightDao.getAll();
         assertEquals(0, flights.size());
     }
+
 }

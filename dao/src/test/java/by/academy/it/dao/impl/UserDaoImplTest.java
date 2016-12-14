@@ -57,7 +57,8 @@ public class UserDaoImplTest extends Assert {
         assertEquals(user, readUser);
     }
 
-    public void getPassword() throws DaoException {
+    @Test
+    public void testGetPassword() throws DaoException {
         User user = new User();
         user.setId(1);
         user.setLogin("testUser");
@@ -66,5 +67,27 @@ public class UserDaoImplTest extends Assert {
         userDao.create(user);
         String password = user.getPassword();
         assertEquals("testPassword", password);
+    }
+
+    @Test
+    public void testGetUserByLogin() throws DaoException{
+        User user = new User();
+        user.setLogin("testUser");
+        user.setPassword("testPassword");
+        user.setUserRole("user");
+        userDao.create(user);
+        User gotUser = userDao.getUserByLogin("testUser");
+        assertEquals(user, gotUser);
+    }
+
+    @Test
+    public void testGetUserId() throws DaoException{
+        User user = new User();
+        user.setLogin("testUser");
+        user.setPassword("testPassword");
+        user.setUserRole("user");
+        userDao.create(user);
+        Integer gotUserId = userDao.getUserId("testUser");
+        assertEquals(user.getId(), gotUserId);
     }
 }

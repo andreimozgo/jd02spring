@@ -38,7 +38,7 @@
                 <prop key="debug">true</prop>
                 <prop key="connection.isolation">2</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
             </props>
         </property>
     </bean>
@@ -49,9 +49,5 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-
-    <bean id="txTemplate" class="org.springframework.transaction.support.TransactionTemplate">
-        <property name="transactionManager" ref="transactionManager"/>
-    </bean>
 
 </beans>

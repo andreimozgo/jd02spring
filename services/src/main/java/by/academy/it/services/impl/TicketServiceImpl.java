@@ -47,7 +47,7 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     public void createOrUpdate(Ticket ticket) {
         try {
             ticketDao.create(ticket);
-         } catch (DaoException e) {
+        } catch (DaoException e) {
             LOG.error("Error create or update ticket: ", e);
         }
     }
@@ -63,6 +63,11 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     }
 
     public void delete(Integer id) {
+        try {
+            ticketDao.delete(id);
+        } catch (DaoException e) {
+            LOG.error("Error delete ticket: ", e);
+        }
     }
 
     public void payTicket(Integer ticketId) {

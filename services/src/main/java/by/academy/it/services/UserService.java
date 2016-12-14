@@ -9,4 +9,6 @@ public interface UserService extends Service<User> {
 
     int getUserId(String login);
 
+    String hash(String input);
+
 }

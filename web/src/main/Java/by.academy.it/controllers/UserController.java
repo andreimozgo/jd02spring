@@ -36,53 +36,21 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration() {
+        //gets registration form
         String page = ConfigurationManager.getProperty("path.page.registration");
         return page;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginPage() {
+        //gets login page
         String page = ConfigurationManager.getProperty("path.page.login");
         return page;
     }
 
-  /*  @RequestMapping(value = "/index", method = RequestMethod.POST)
-    public String userCheck(HttpSession session, HttpServletRequest request, Locale locale,
-                            @RequestParam(value = "login") String login,
-                            @RequestParam(value = "password") String password) {
-        String page;
-        String userRole;
-        // login and password check
-        if (userService.checkLogin(login, password)) {
-            session.setAttribute("user", login);
-            // getting user role
-            LOG.info("Truing to get user" + login);
-            User user = userService.getUserByLogin(login);
-            LOG.info("User " + login + " got successfully");
-            userRole = user.getUserRole();
-            int id = user.getId();
-            // setting user role to session
-            session.setAttribute("role", userRole);
-            session.setAttribute("userid", id);
-            session.setAttribute("user", login);
-            LOG.info("User " + login + " logged in successfully");
-
-            // getting main.jsp page depending on user role
-            if (userRole.equals("admin")) {
-
-                page = adminController.getAdminPage(request);
-            } else {
-                page = clientController.getClientPage(request);
-            }
-        } else {
-            request.setAttribute("errorLoginPassMessage", messageSource.getMessage("message.loginerror", null, locale));
-            page = ConfigurationManager.getProperty("path.page.login");
-        }
-        return page;
-    }*/
-
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
+        //gets logout page
         LOG.info("User logged out successfully");
         String page = ConfigurationManager.getProperty("path.page.index");
         return page;

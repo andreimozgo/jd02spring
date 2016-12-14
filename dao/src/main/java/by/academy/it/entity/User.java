@@ -2,17 +2,19 @@ package by.academy.it.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@GenericGenerator(name = "PK", strategy = "increment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
 public class User extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "PK")
     private Integer id;
     @Column(name = "login")
     private String login;

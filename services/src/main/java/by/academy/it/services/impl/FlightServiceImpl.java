@@ -24,16 +24,6 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
         this.flightDao = flightDao;
     }
 
-    public List<Flight> getAll() {
-        List<Flight> flights = null;
-        try {
-            flights = flightDao.getAll();
-        } catch (DaoException e) {
-            LOG.error("Error get all flights: ", e);
-        }
-        return flights;
-    }
-
     public List<Flight> getAll(int recordsPerPage, int currentPage) {
         List<Flight> flights = null;
         try {

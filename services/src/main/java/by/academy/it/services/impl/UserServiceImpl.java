@@ -50,11 +50,22 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public User findEntityById(Integer id) {
-        return null;
+
+        User user = null;
+        try {
+            user = userDao.findEntityById(id);
+        } catch (DaoException e) {
+            LOG.error("Error find ticket: ", e);
+        }
+        return user;
     }
 
     public void delete(Integer id) {
-
+        try {
+            userDao.delete(id);
+        } catch (DaoException e) {
+            LOG.error("Error delete user: ", e);
+        }
     }
 
     public User getUserByLogin(String login) {
@@ -68,7 +79,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public int getUserId(String login) {
-        int userId=0;
+        int userId = 0;
         try {
             userId = userDao.getUserId(login);
             LOG.info(userId);

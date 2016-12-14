@@ -2,18 +2,20 @@ package by.academy.it.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@GenericGenerator(name = "PK", strategy = "increment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "lowcost")
 public class Flight extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "flight_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "PK")
     private Integer id;
     @Column(name = "date")
     private String date;
