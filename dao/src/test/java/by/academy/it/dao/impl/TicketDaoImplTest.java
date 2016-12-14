@@ -8,18 +8,15 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @ContextConfiguration("/test-context.xml")
-@Rollback
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional(transactionManager = "txManager", propagation = Propagation.SUPPORTS)
+@Transactional()
 public class TicketDaoImplTest extends Assert {
 
     @Autowired
@@ -34,7 +31,6 @@ public class TicketDaoImplTest extends Assert {
         Ticket readTicket = ticketDao.findEntityById(1);
         assertNotNull(readTicket);
         assertEquals(ticket, readTicket);
-        ticketDao.delete(1);
     }
 
     @Test
@@ -53,7 +49,6 @@ public class TicketDaoImplTest extends Assert {
         Ticket readticket = ticketDao.findEntityById(3);
         assertNotNull(readticket);
         assertEquals(ticket, readticket);
-        ticketDao.delete(3);
     }
 
     @Test
