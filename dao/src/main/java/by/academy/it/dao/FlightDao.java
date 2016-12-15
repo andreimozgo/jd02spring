@@ -9,9 +9,9 @@ public interface FlightDao extends Dao<Flight> {
 
     List<Flight> getAll() throws DaoException;
 
-    List getAll(int recordsPerPage, int currentPage) throws DaoException ;
+    List<Flight> getAll(int recordsPerPage, int currentPage) throws DaoException ;
 
-    List getAll(int recordsPerPage, int currentPage, String flightDate) throws DaoException;
+    List<Flight> getAll(int recordsPerPage, int currentPage, String flightDate) throws DaoException;
 
     Long getAmount() throws DaoException;
 

@@ -18,6 +18,7 @@ import java.util.List;
 public class FlightServiceImpl extends AbstractService<Flight> implements FlightService {
     final Logger LOG = Logger.getLogger(FlightServiceImpl.class);
     private FlightDao flightDao;
+    private final int defaultNumberOfPages = 1;
 
     @Autowired
     public FlightServiceImpl(FlightDao flightDao) {
@@ -71,7 +72,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public int getNumberOfPages(int recordsPerPage) {
-        int numberOfPages = 1;
+        int numberOfPages = defaultNumberOfPages;
         try {
             Long numberOfRecords = flightDao.getAmount();
             numberOfPages = Math.round(numberOfRecords / recordsPerPage);
@@ -84,7 +85,7 @@ public class FlightServiceImpl extends AbstractService<Flight> implements Flight
     }
 
     public int getNumberOfPages(int recordsPerPage, String flightDate) {
-        int numberOfPages = 1;
+        int numberOfPages = defaultNumberOfPages;
         try {
             Long numberOfRecords = flightDao.getAmount(flightDate);
             numberOfPages = Math.round(numberOfRecords / recordsPerPage);

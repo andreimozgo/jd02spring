@@ -18,6 +18,7 @@ import java.util.List;
 public class TicketServiceImpl extends AbstractService<Ticket> implements TicketService {
     final Logger LOG = Logger.getLogger(TicketServiceImpl.class);
     private TicketDao ticketDao;
+    private final int ticketPayed = 1;
 
     @Autowired
     public TicketServiceImpl(TicketDao ticketDao) {
@@ -73,7 +74,7 @@ public class TicketServiceImpl extends AbstractService<Ticket> implements Ticket
     public void payTicket(Integer ticketId) {
         try {
             Ticket ticket = ticketDao.findEntityById(ticketId);
-            ticket.setPaid(1);
+            ticket.setPaid(ticketPayed);
             ticketDao.create(ticket);
         } catch (DaoException e) {
             LOG.error("Error pay ticket: ", e);

@@ -50,7 +50,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public User findEntityById(Integer id) {
-
         User user = null;
         try {
             user = userDao.findEntityById(id);
@@ -79,7 +78,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     public int getUserId(String login) {
-        int userId = 0;
+        Integer userId = null;
         try {
             userId = userDao.getUserId(login);
             LOG.info(userId);

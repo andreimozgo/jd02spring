@@ -37,6 +37,5 @@ public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraSer
     }
 
     public void delete(Integer id) {
-
     }
 }

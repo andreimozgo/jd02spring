@@ -23,8 +23,10 @@ public class AdminController {
     private FlightService flightService;
     @Autowired
     private TicketService ticketService;
-
     final Logger LOG = Logger.getLogger(AdminController.class);
+    private final int defaultRecordsPerPage = 3;
+    private final int defaultCurrentPage = 1;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -37,20 +39,19 @@ public class AdminController {
         String page;
         int currentPage;
         int recordsPerPage;
-        //gets all tickets
         List<Ticket> tickets = ticketService.getAll();
         request.setAttribute("tickets", tickets);
         //used for pagination
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
-            recordsPerPage = 3;
+            recordsPerPage = defaultRecordsPerPage;
         }
 
         if (request.getParameter("currentPage") != null) {
             currentPage = Integer.valueOf(request.getParameter("currentPage"));
         } else {
-            currentPage = 1;
+            currentPage = defaultCurrentPage;
         }
         //gets all flights with pagination
         List<Flight> flights = flightService.getAll(recordsPerPage, currentPage);
@@ -67,7 +68,7 @@ public class AdminController {
     @RequestMapping(value = "/addflight", method = RequestMethod.POST)
     public String addFlight(HttpServletRequest request) {
         String page;
-        //adds flights
+        //adds flight
         String date = request.getParameter("flightDate");
         int seats = Integer.parseInt(request.getParameter("seats"));
         int cost = Integer.parseInt(request.getParameter("cost"));

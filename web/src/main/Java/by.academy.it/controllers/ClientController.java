@@ -33,6 +33,8 @@ public class ClientController {
     private UserService userService;
 
     final Logger LOG = Logger.getLogger(ClientController.class);
+    private final int defaultRecordsPerPage = 3;
+    private final int defaultCurrentPage = 1;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -58,13 +60,13 @@ public class ClientController {
         if (request.getParameter("recordsPerPage") != null) {
             recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
         } else {
-            recordsPerPage = 3;
+            recordsPerPage = defaultRecordsPerPage;
         }
 
         if (request.getParameter("currentPage") != null) {
             currentPage = Integer.valueOf(request.getParameter("currentPage"));
         } else {
-            currentPage = 1;
+            currentPage = defaultCurrentPage;
         }
         int numberOfPages;
         if (request.getParameter("flightDate") != null) {

@@ -48,7 +48,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 
     public int getUserId(String login) throws DaoException {
         String hql = "FROM User WHERE login= :login";
-        int userId=0;
+        Integer userId = null;
         try {
             Query query = getSession().createQuery(hql);
             query.setParameter("login", login);
