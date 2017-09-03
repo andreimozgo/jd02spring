@@ -3,7 +3,6 @@ package by.academy.it.services.impl;
 import by.academy.it.dao.TicketDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Ticket;
-import by.academy.it.services.AbstractService;
 import by.academy.it.services.TicketService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class TicketServiceImpl extends AbstractService<Ticket> implements TicketService {
+public class TicketServiceImpl implements TicketService, by.academy.it.services.Service<Ticket> {
     final Logger LOG = Logger.getLogger(TicketServiceImpl.class);
-    private TicketDao ticketDao;
     private final int ticketPayed = 1;
+    private TicketDao ticketDao;
 
     @Autowired
     public TicketServiceImpl(TicketDao ticketDao) {

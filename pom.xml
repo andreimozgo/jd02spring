@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>by.academy.it</groupId>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -78,7 +78,6 @@
     </reporting>
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>com.google.code.maven-play-plugin.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
@@ -89,14 +88,6 @@
                 <artifactId>commons-dbcp</artifactId>
                 <version>${dbcp.version}</version>
             </dependency>
-
-            <!-- Logger -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-
             <!-- MySQL -->
             <dependency>
                 <groupId>mysql</groupId>

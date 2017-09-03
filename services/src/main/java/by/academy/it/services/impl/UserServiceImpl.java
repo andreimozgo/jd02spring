@@ -3,7 +3,6 @@ package by.academy.it.services.impl;
 import by.academy.it.dao.UserDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.User;
-import by.academy.it.services.AbstractService;
 import by.academy.it.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class UserServiceImpl extends AbstractService<User> implements UserService {
+public class UserServiceImpl implements UserService, by.academy.it.services.Service<User> {
     final Logger LOG = Logger.getLogger(UserServiceImpl.class);
     private UserDao userDao;
 

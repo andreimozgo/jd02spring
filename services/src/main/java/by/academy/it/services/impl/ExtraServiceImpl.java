@@ -3,7 +3,6 @@ package by.academy.it.services.impl;
 import by.academy.it.dao.ExtraDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Extra;
-import by.academy.it.services.AbstractService;
 import by.academy.it.services.ExtraService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraService {
+public class ExtraServiceImpl implements ExtraService, by.academy.it.services.Service<Extra> {
     final Logger LOG = Logger.getLogger(ExtraServiceImpl.class);
     private ExtraDao extraDao;
 
@@ -23,7 +22,6 @@ public class ExtraServiceImpl extends AbstractService<Extra> implements ExtraSer
     }
 
     public void createOrUpdate(Extra extra) {
-
     }
 
     public Extra findEntityById(Integer id) {

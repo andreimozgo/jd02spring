@@ -3,7 +3,6 @@ package by.academy.it.services.impl;
 import by.academy.it.dao.FlightDao;
 import by.academy.it.dao.exceptions.DaoException;
 import by.academy.it.entity.Flight;
-import by.academy.it.services.AbstractService;
 import by.academy.it.services.FlightService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class FlightServiceImpl extends AbstractService<Flight> implements FlightService {
+public class FlightServiceImpl implements FlightService, by.academy.it.services.Service<Flight> {
     final Logger LOG = Logger.getLogger(FlightServiceImpl.class);
-    private FlightDao flightDao;
     private final int defaultNumberOfPages = 1;
+    private FlightDao flightDao;
 
     @Autowired
     public FlightServiceImpl(FlightDao flightDao) {
